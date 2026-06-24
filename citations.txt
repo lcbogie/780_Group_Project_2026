@@ -1,0 +1,2 @@
+file: wc_2022.csv
+downloaded by Colby from <https://www.kaggle.com/datasets/die9origephit/fifa-world-cup-2022-complete-dataset/data> on 6/24/26
