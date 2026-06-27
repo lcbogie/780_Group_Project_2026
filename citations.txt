@@ -1,2 +1,5 @@
 file: wc_2022.csv
 downloaded by Colby from <https://www.kaggle.com/datasets/die9origephit/fifa-world-cup-2022-complete-dataset/data> on 6/24/26
+
+files: fifa_ranking-2023-07-20.csv, fifa_ranking-2024-04-04.csv, fifa_ranking-2024-06-20.csv
+downloaded by Colby from <https://www.kaggle.com/datasets/cashncarry/fifaworldranking/data> on 6/27/26
