@@ -3,3 +3,6 @@ downloaded by Colby from <https://www.kaggle.com/datasets/die9origephit/fifa-wor
 
 files: fifa_ranking-2023-07-20.csv, fifa_ranking-2024-04-04.csv, fifa_ranking-2024-06-20.csv
 downloaded by Colby from <https://www.kaggle.com/datasets/cashncarry/fifaworldranking/data> on 6/27/26
+
+file: wc_2018.csv
+downloaded by Colby from <https://gitlab.com/djh_or/2018-world-cup-stats/blob/master/world_cup_2018_stats.csv> on 6/28/26.
