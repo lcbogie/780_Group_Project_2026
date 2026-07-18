@@ -7,8 +7,8 @@ downloaded by Colby from <https://www.kaggle.com/datasets/cashncarry/fifaworldra
 file: wc_2018.csv
 downloaded by Colby from <https://gitlab.com/djh_or/2018-world-cup-stats/blob/master/world_cup_2018_stats.csv> on 6/28/26.
 
-data: World Cup 2022 player data by league sourced by Colby from football reference on 7/1/26
+data: World Cup 2022 player data by league sourced by Colby from fbref.com on 7/1/26
 <https://fbref.com/en/comps/1/2022/leagues/2022-World-Cup-Players-By-League>
 
-file: fifa_worldcup_2010_2022
-downloaded by Colby from <https://www.kaggle.com/datasets/chaitanyajamble/fifa-world-cup-2010-2022> on 7/18/26
+data: World Cup 2014 match results for Y matrix construction sourced by Colby from fbref.com on 7/18/26
+<https://fbref.com/en/comps/1/2014/2014-World-Cup-Stats>
