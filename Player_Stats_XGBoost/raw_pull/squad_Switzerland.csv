@@ -1,0 +1,27 @@
+id,name,age,number,position,photo,team_id,team_name
+123468,M. Keller,23,21,Goalkeeper,https://media.api-sports.io/football/players/123468.png,15,Switzerland
+25282,G. Kobel,28,1,Goalkeeper,https://media.api-sports.io/football/players/25282.png,15,Switzerland
+1142,Y. Mvogo,31,12,Goalkeeper,https://media.api-sports.io/football/players/1142.png,15,Switzerland
+5,M. Akanji,30,5,Defender,https://media.api-sports.io/football/players/5.png,15,Switzerland
+162414,A. Amenda,22,24,Defender,https://media.api-sports.io/football/players/162414.png,15,Switzerland
+48372,E. Cömert,27,18,Defender,https://media.api-sports.io/football/players/48372.png,15,Switzerland
+2803,N. Elvedi,29,4,Defender,https://media.api-sports.io/football/players/2803.png,15,Switzerland
+349344,L. Jaquez,22,25,Defender,https://media.api-sports.io/football/players/349344.png,15,Switzerland
+48489,M. Muheim,27,2,Defender,https://media.api-sports.io/football/players/48489.png,15,Switzerland
+1631,R. Rodríguez,33,13,Defender,https://media.api-sports.io/football/players/1631.png,15,Switzerland
+48378,S. Widmer,32,3,Defender,https://media.api-sports.io/football/players/48378.png,15,Switzerland
+951,M. Aebischer,28,20,Midfielder,https://media.api-sports.io/football/players/951.png,15,Switzerland
+2807,R. Freuler,33,8,Midfielder,https://media.api-sports.io/football/players/2807.png,15,Switzerland
+264705,A. Jashari,23,14,Midfielder,https://media.api-sports.io/football/players/264705.png,15,Switzerland
+957,D. Sow,28,15,Midfielder,https://media.api-sports.io/football/players/957.png,15,Switzerland
+1464,G. Xhaka,33,10,Midfielder,https://media.api-sports.io/football/players/1464.png,15,Switzerland
+2810,D. Zakaria,29,6,Defender,https://media.api-sports.io/football/players/2810.png,15,Switzerland
+952,C. Fassnacht,32,16,Midfielder,https://media.api-sports.io/football/players/952.png,15,Switzerland
+48497,C. Itten,29,26,Attacker,https://media.api-sports.io/football/players/48497.png,15,Switzerland
+163032,F. Rieder,23,22,Midfielder,https://media.api-sports.io/football/players/163032.png,15,Switzerland
+48471,R. Vargas,27,17,Attacker,https://media.api-sports.io/football/players/48471.png,15,Switzerland
+123469,Z. Amdouni,25,23,Attacker,https://media.api-sports.io/football/players/123469.png,15,Switzerland
+421,B. Embolo,28,7,Attacker,https://media.api-sports.io/football/players/421.png,15,Switzerland
+406244,J. Manzambi,20,9,Attacker,https://media.api-sports.io/football/players/406244.png,15,Switzerland
+48389,N. Okafor,25,19,Attacker,https://media.api-sports.io/football/players/48389.png,15,Switzerland
+48648,D. Ndoye,25,11,Midfielder,https://media.api-sports.io/football/players/48648.png,15,Switzerland

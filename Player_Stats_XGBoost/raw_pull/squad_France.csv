@@ -1,0 +1,27 @@
+id,name,age,number,position,photo,team_id,team_name
+22221,M. Maignan,30,16,Goalkeeper,https://media.api-sports.io/football/players/22221.png,2,France
+347211,R. Risser,21,23,Goalkeeper,https://media.api-sports.io/football/players/347211.png,2,France
+21628,B. Samba,31,1,Goalkeeper,https://media.api-sports.io/football/players/21628.png,2,France
+2724,L. Digne,32,3,Defender,https://media.api-sports.io/football/players/2724.png,2,France
+161907,M. Gusto,22,2,Defender,https://media.api-sports.io/football/players/161907.png,2,France
+33,L. Hernández,29,21,Defender,https://media.api-sports.io/football/players/33.png,2,France
+47300,T. Hernández,28,19,Defender,https://media.api-sports.io/football/players/47300.png,2,France
+1145,I. Konaté,26,15,Defender,https://media.api-sports.io/football/players/1145.png,2,France
+1257,J. Koundé,27,5,Defender,https://media.api-sports.io/football/players/1257.png,2,France
+20995,M. Lacroix,25,26,Defender,https://media.api-sports.io/football/players/20995.png,2,France
+22090,W. Saliba,24,17,Defender,https://media.api-sports.io/football/players/22090.png,2,France
+1149,D. Upamecano,27,4,Defender,https://media.api-sports.io/football/players/1149.png,2,France
+156477,R. Cherki,22,24,Midfielder,https://media.api-sports.io/football/players/156477.png,2,France
+2290,N. Kanté,34,13,Midfielder,https://media.api-sports.io/football/players/2290.png,2,France
+22147,M. Koné,24,6,Midfielder,https://media.api-sports.io/football/players/22147.png,2,France
+272,A. Rabiot,30,14,Midfielder,https://media.api-sports.io/football/players/272.png,2,France
+1271,A. Tchouaméni,25,8,Midfielder,https://media.api-sports.io/football/players/1271.png,2,France
+336657,W. Zaïre-Emery,19,18,Midfielder,https://media.api-sports.io/football/players/336657.png,2,France
+274300,M. Akliouche,23,25,Midfielder,https://media.api-sports.io/football/players/274300.png,2,France
+161904,B. Barcola,23,12,Midfielder,https://media.api-sports.io/football/players/161904.png,2,France
+25927,J. Mateta,28,22,Attacker,https://media.api-sports.io/football/players/25927.png,2,France
+153,O. Dembélé,28,7,Midfielder,https://media.api-sports.io/football/players/153.png,2,France
+343027,D. Doué,20,20,Midfielder,https://media.api-sports.io/football/players/343027.png,2,France
+278,Kylian Mbappé,27,10,Attacker,https://media.api-sports.io/football/players/278.png,2,France
+21509,M. Thuram,28,9,Midfielder,https://media.api-sports.io/football/players/21509.png,2,France
+19617,M. Olise,24,11,Midfielder,https://media.api-sports.io/football/players/19617.png,2,France

@@ -1,0 +1,22 @@
+player_id,name,age,nationality,season,club,competition,country,appearances,minutes,position,rating,goals,assists,passes_total,passes_key,pass_accuracy_pct,shots_total,shots_on_target,tackles_total,duels_total,duels_won
+19599,E. Martínez,33,Argentina,2024,Aston Villa,Premier League,England,37,3196,Goalkeeper,7.094594,,0.0,1247.0,2.0,,,,3.0,22.0,20.0
+19599,E. Martínez,33,Argentina,2024,Aston Villa,FA Cup,England,4,360,Goalkeeper,6.950000,,0.0,137.0,,,,,,2.0,2.0
+19599,E. Martínez,33,Argentina,2024,Aston Villa,League Cup,England,0,0,Goalkeeper,,0.0,,,,,,,,,
+19599,E. Martínez,33,Argentina,2024,Aston Villa,UEFA Champions League,World,12,1080,Goalkeeper,7.416666,,0.0,427.0,,,,,1.0,7.0,7.0
+19599,E. Martínez,33,Argentina,2024,Argentina,Copa America,World,6,570,Goalkeeper,7.333333,,0.0,191.0,2.0,,,,,1.0,1.0
+19599,E. Martínez,33,Argentina,2024,Argentina,Friendlies,World,3,270,Goalkeeper,7.100000,0.0,0.0,62.0,1.0,,,,1.0,1.0,1.0
+2465,J. Musso,31,Argentina,2024,Atletico Madrid,La Liga,Spain,2,180,Goalkeeper,7.300000,0.0,0.0,48.0,,,,,,1.0,1.0
+2465,J. Musso,31,Argentina,2024,Atalanta,Serie A,Italy,1,90,Goalkeeper,7.700000,0.0,0.0,29.0,,,,,,1.0,1.0
+2465,J. Musso,31,Argentina,2024,Atalanta,Coppa Italia,Italy,0,0,Goalkeeper,,0.0,,,,,,,,,
+2465,J. Musso,31,Argentina,2024,Atletico Madrid,UEFA Champions League,World,0,0,Goalkeeper,,0.0,,,,,,,,,
+2465,J. Musso,31,Argentina,2024,Atalanta,UEFA Super Cup,World,1,90,Goalkeeper,,0.0,,,,,,,,,
+2465,J. Musso,31,Argentina,2024,Atalanta,UEFA Champions League,World,0,0,Goalkeeper,,0.0,,,,,,,,,
+2465,J. Musso,31,Argentina,2024,Atletico Madrid,Copa del Rey,Spain,7,630,Goalkeeper,7.533333,0.0,0.0,59.0,,,,,,1.0,1.0
+47296,G. Rulli,33,Argentina,2024,Marseille,Ligue 1,France,34,3060,Goalkeeper,7.073529,,0.0,1066.0,2.0,,,,4.0,29.0,22.0
+47296,G. Rulli,33,Argentina,2024,Ajax,Eredivisie,Netherlands,0,0,Goalkeeper,,0.0,,,,,,,,,
+47296,G. Rulli,33,Argentina,2024,Marseille,Coupe de France,France,0,0,Goalkeeper,,0.0,,,,,,,,,
+47296,G. Rulli,33,Argentina,2024,Ajax,UEFA Europa League,World,0,0,Goalkeeper,,0.0,,,,,,,,,
+47296,G. Rulli,33,Argentina,2024,Ajax,Friendlies Clubs,World,0,0,Goalkeeper,,0.0,,,,,,,,,
+47296,G. Rulli,33,Argentina,2024,Argentina U23,Olympics Men,World,1,90,Goalkeeper,9.700000,,0.0,31.0,,,,,,1.0,1.0
+47296,G. Rulli,33,Argentina,2024,Argentina,Copa America,World,0,0,Goalkeeper,,0.0,,,,,,,,,
+47296,G. Rulli,33,Argentina,2024,Argentina,Friendlies,World,0,0,Goalkeeper,,0.0,,,,,,,,,
