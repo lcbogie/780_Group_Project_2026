@@ -10,5 +10,7 @@ downloaded by Colby from <https://gitlab.com/djh_or/2018-world-cup-stats/blob/ma
 data: World Cup 2022 player data by league sourced by Colby from fbref.com on 7/1/26
 <https://fbref.com/en/comps/1/2022/leagues/2022-World-Cup-Players-By-League>
 
-data: World Cup 2014 match results for Y matrix construction sourced by Colby from fbref.com on 7/18/26
-<https://fbref.com/en/comps/1/2014/2014-World-Cup-Stats>
+data: World Cup 2010 and 2014 match results for Y matrix construction sourced by Colby from fbref.com on 7/18/26
+<https://fbref.com/en/comps/1/2014/2014-World-Cup-Stats> etc
+
+data: World Cup 2010, 2014, and 2018 roster composition data sourced by Colby from fbref.com on 7/19-7/22/26
