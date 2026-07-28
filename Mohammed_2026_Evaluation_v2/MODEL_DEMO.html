@@ -1,0 +1,923 @@
+<style>
+  .demo {
+    --bg:            #eff2ed;
+    --surface:       #fbfbf8;
+    --surface-2:     #f3f5f0;
+    --ink:           #14201a;
+    --ink-2:         #4b584f;
+    --ink-muted:     #808c82;
+    --accent:        #1e6b45;
+    --accent-strong: #123d28;
+    --accent-wash:   rgba(30,107,69,0.10);
+    --accent2:       #c97a2b;
+    --accent2-wash:  rgba(201,122,43,0.14);
+    --line:          rgba(20,32,26,0.14);
+    --good:          #0ca30c;
+    --critical:      #d03b3b;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .demo {
+      --bg: #0e1712; --surface:#16221b; --surface-2:#121c16; --ink:#e7ece7; --ink-2:#b7c4bb;
+      --ink-muted:#8b9990; --accent:#4fae7c; --accent-strong:#6fcb99; --accent-wash:rgba(79,174,124,0.16);
+      --accent2:#e0a354; --accent2-wash:rgba(224,163,84,0.16); --line:rgba(231,236,231,0.18);
+      --good:#0ca30c; --critical:#e66767; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] .demo {
+    --bg: #0e1712; --surface:#16221b; --surface-2:#121c16; --ink:#e7ece7; --ink-2:#b7c4bb;
+    --ink-muted:#8b9990; --accent:#4fae7c; --accent-strong:#6fcb99; --accent-wash:rgba(79,174,124,0.16);
+    --accent2:#e0a354; --accent2-wash:rgba(224,163,84,0.16); --line:rgba(231,236,231,0.18);
+    --good:#0ca30c; --critical:#e66767; color-scheme: dark;
+  }
+  :root[data-theme="light"] .demo {
+    --bg: #eff2ed; --surface:#fbfbf8; --surface-2:#f3f5f0; --ink:#14201a; --ink-2:#4b584f;
+    --ink-muted:#808c82; --accent:#1e6b45; --accent-strong:#123d28; --accent-wash:rgba(30,107,69,0.10);
+    --accent2:#c97a2b; --accent2-wash:rgba(201,122,43,0.14); --line:rgba(20,32,26,0.14);
+    --good:#0ca30c; --critical:#d03b3b; color-scheme: light;
+  }
+
+  .demo { background: var(--bg); color: var(--ink); font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; line-height: 1.5; padding-bottom: 5rem; }
+  .demo * { box-sizing: border-box; }
+  .demo h1, .demo h2, .demo h3 { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif; color: var(--accent-strong); text-wrap: balance; margin: 0; line-height: 1.15; }
+  .demo .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+  .demo .wrap { max-width: 960px; margin: 0 auto; padding: 0 1.5rem; }
+
+  .demo .masthead { background: linear-gradient(180deg, var(--accent-strong), var(--accent) 140%); color: #f3f5ef; padding: 2.6rem 0 2rem; }
+  .demo .masthead .kicker { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.72rem; color: #cfe6d8; margin: 0 0 0.7rem; }
+  .demo .masthead h1 { color: #fff; font-size: clamp(1.6rem, 3.6vw, 2.25rem); max-width: 22ch; }
+  .demo .masthead p.dek { max-width: 64ch; font-size: 1rem; color: #e3efe8; margin-top: 0.7rem; }
+
+  .demo .tabs { display: flex; gap: 0; margin: 2rem 0 1.4rem; border-bottom: 1px solid var(--line); overflow-x: auto; }
+  .demo .tab-btn {
+    font: inherit; font-size: 0.86rem; font-weight: 600; color: var(--ink-muted); background: none; border: none;
+    padding: 0.7rem 0.2rem; margin-right: 1.5rem; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px;
+    white-space: nowrap;
+  }
+  .demo .tab-btn.active { color: var(--accent-strong); border-bottom-color: var(--accent); }
+  .demo .tab-panel { display: none; }
+  .demo .tab-panel.active { display: block; }
+
+  .demo .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 1.6rem 1.7rem; }
+  .demo .panel + .panel { margin-top: 1.2rem; }
+  .demo .field-row { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+  .demo select {
+    font: inherit; font-size: 0.95rem; padding: 0.5rem 0.7rem; border-radius: 6px; border: 1px solid var(--line);
+    background: var(--surface-2); color: var(--ink); min-width: 220px;
+  }
+  .demo .team-meta { display: flex; flex-wrap: wrap; gap: 0.5rem 1.4rem; margin-top: 1rem; font-size: 0.82rem; color: var(--ink-2); }
+  .demo .team-meta b { color: var(--ink); }
+
+  .demo .league-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0.9rem; margin-top: 1.2rem; }
+  .demo .slider-field label { display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--ink-2); margin-bottom: 0.3rem; }
+  .demo .slider-field label .v { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: var(--ink); font-weight: 600; }
+  .demo input[type="range"] { width: 100%; accent-color: var(--accent); }
+  .demo .t5-total { margin-top: 1.1rem; font-size: 0.85rem; color: var(--ink-2); }
+  .demo .t5-total b { color: var(--accent-strong); }
+
+  .demo .btn {
+    font: inherit; font-size: 0.9rem; font-weight: 600; color: #fff; background: var(--accent-strong);
+    border: none; border-radius: 6px; padding: 0.65rem 1.2rem; cursor: pointer; margin-top: 1.3rem;
+  }
+  .demo .btn:hover { background: var(--accent); }
+  .demo .btn:focus-visible { outline: 2px solid var(--accent2); outline-offset: 2px; }
+  .demo .btn.ghost { background: none; color: var(--accent-strong); border: 1px solid var(--line); }
+  .demo .btn:disabled { opacity: 0.5; cursor: default; }
+  .demo .btn-row { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+
+  .demo .predict-panel { margin-top: 1.6rem; }
+  .demo .predict-panel h3 { font-size: 1rem; margin-bottom: 0.3rem; }
+  .demo .predict-panel .sub { font-size: 0.8rem; color: var(--ink-muted); margin-bottom: 1rem; }
+
+  .demo .divbar-scale { position: relative; height: 1.1rem; margin-bottom: 0.3rem; }
+  .demo .divbar-scale .tick { position: absolute; top: 0; font-size: 0.66rem; color: var(--ink-muted); transform: translateX(-50%); }
+
+  .demo .divbar-row { display: grid; grid-template-columns: 220px 1fr 58px; align-items: center; gap: 0.7rem; margin-bottom: 0.55rem; cursor: pointer; border-radius: 4px; padding: 2px 4px; margin-left: -4px; }
+  .demo .divbar-row:hover { background: var(--surface-2); }
+  .demo .divbar-row .name { font-size: 0.8rem; color: var(--ink); text-align: right; }
+  .demo .divbar-track { position: relative; height: 16px; background: var(--surface-2); border-radius: 3px; }
+  .demo .divbar-track .zero { position: absolute; top: -3px; bottom: -3px; width: 1px; background: var(--line); }
+  .demo .divbar-fill { position: absolute; top: 0; height: 16px; background: var(--accent); border-radius: 3px; transition: width 0.5s cubic-bezier(.2,.8,.2,1), left 0.5s cubic-bezier(.2,.8,.2,1); }
+  .demo .divbar-fill.critical-fill { background: var(--critical); }
+  .demo .divbar-track .actual-marker {
+    position: absolute; top: -4px; bottom: -4px; width: 3px; background: var(--accent2); border-radius: 2px;
+    box-shadow: 0 0 0 2px var(--surface);
+    animation: popIn 0.4s cubic-bezier(.2,.8,.2,1);
+  }
+  .demo .divbar-track .guess-marker {
+    position: absolute; top: -6px; bottom: -6px; width: 0; border-left: 2px dashed var(--ink);
+    animation: popIn 0.4s cubic-bezier(.2,.8,.2,1);
+  }
+  @keyframes popIn { from { opacity: 0; transform: scaleY(0.3); } to { opacity: 1; transform: scaleY(1); } }
+  .demo .divbar-row .val { font-size: 0.76rem; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+  .demo .divbar-row.best .name { font-weight: 700; color: var(--accent-strong); }
+  .demo .divbar-row.worst .name { color: var(--critical); }
+  .demo .divbar-row.dimmed { opacity: 0.35; }
+  .demo .divbar-row.pinned { background: var(--accent-wash); }
+  .demo .divbar-row.pinned .name { font-weight: 700; }
+
+  .demo .reveal-box {
+    margin-top: 1.3rem; padding: 1rem 1.2rem; border-radius: 6px; background: var(--accent2-wash);
+    border: 1px solid var(--line); display: none; font-size: 0.9rem; color: var(--ink);
+    animation: popIn 0.35s cubic-bezier(.2,.8,.2,1);
+  }
+  .demo .reveal-box.shown { display: block; }
+  .demo .reveal-box b { color: var(--accent-strong); }
+  .demo .chart-legend { display: flex; gap: 1.3rem; font-size: 0.76rem; color: var(--ink-2); margin-top: 0.6rem; flex-wrap: wrap; }
+  .demo .chart-legend span { display: inline-flex; align-items: center; gap: 0.4rem; }
+  .demo .chart-legend i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+  .demo .chart-legend i.line { width: 3px; height: 12px; border-radius: 1px; background: var(--accent2); }
+  .demo .chart-legend i.dash { width: 10px; height: 0; border-top: 2px dashed var(--ink); }
+  .demo .hint { font-size: 0.76rem; color: var(--ink-muted); margin-top: 0.9rem; }
+
+  .demo .revision-note { font-size: 0.82rem; color: var(--ink-2); background: var(--accent2-wash); border: 1px solid var(--line); border-radius: 6px; padding: 0.8rem 1rem; margin-bottom: 1.5rem; }
+  .demo .revision-note b { color: var(--accent-strong); }
+
+  /* Guess widget */
+  .demo .guess-box { margin-top: 1.4rem; padding-top: 1.2rem; border-top: 1px dashed var(--line); }
+  .demo .guess-box .slider-field { margin-bottom: 0.8rem; }
+  .demo .guess-locked-tag { display: inline-block; font-size: 0.72rem; color: var(--accent); font-weight: 600; margin-left: 0.6rem; }
+
+  /* Leaderboard */
+  .demo .lb-controls { display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center; margin-bottom: 1rem; }
+  .demo table.lb { border-collapse: collapse; width: 100%; font-size: 0.84rem; }
+  .demo table.lb th, .demo table.lb td { text-align: left; padding: 0.5rem 0.7rem; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  .demo table.lb th { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-muted); font-weight: 600; cursor: pointer; user-select: none; }
+  .demo table.lb th:hover { color: var(--accent); }
+  .demo table.lb th .arrow { font-size: 0.6rem; margin-left: 0.2rem; }
+  .demo table.lb td.num, .demo table.lb th.num { text-align: right; font-variant-numeric: tabular-nums; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+  .demo table.lb tbody tr:hover { background: var(--surface-2); }
+  .demo .lb-scroll { overflow-x: auto; max-height: 520px; overflow-y: auto; border: 1px solid var(--line); border-radius: 6px; }
+  .demo table.lb thead th { position: sticky; top: 0; background: var(--surface); z-index: 1; }
+
+  /* Match tab */
+  .demo .match-teams { display: flex; align-items: center; gap: 1rem; font-size: 1.1rem; font-family: Georgia, serif; color: var(--ink); margin-top: 0.4rem; }
+  .demo .match-teams .vs { color: var(--ink-muted); font-size: 0.85rem; font-family: inherit; }
+  .demo .prob-group { margin-top: 1.4rem; }
+  .demo .prob-group h4 { font-size: 0.85rem; color: var(--ink); margin: 0 0 0.6rem; font-family: inherit; font-weight: 700; }
+  .demo .prob-row { display: grid; grid-template-columns: 90px 1fr 48px; align-items: center; gap: 0.6rem; margin-bottom: 0.4rem; }
+  .demo .prob-row .name { font-size: 0.78rem; color: var(--ink-2); }
+  .demo .prob-track { height: 12px; background: var(--surface-2); border-radius: 3px; position: relative; }
+  .demo .prob-fill { height: 12px; border-radius: 3px; background: var(--accent); transition: width 0.5s cubic-bezier(.2,.8,.2,1); }
+  .demo .prob-row.predicted .name { font-weight: 700; color: var(--accent-strong); }
+  .demo .prob-row.actual-outcome .prob-fill { background: var(--good); }
+  .demo .prob-row .pval { font-size: 0.76rem; color: var(--ink-2); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; text-align: right; }
+  .demo .guess-outcome-btns { display: flex; gap: 0.6rem; margin-top: 0.8rem; flex-wrap: wrap; }
+  .demo .guess-outcome-btn {
+    font: inherit; font-size: 0.85rem; padding: 0.55rem 1rem; border-radius: 6px; border: 1px solid var(--line);
+    background: var(--surface-2); color: var(--ink); cursor: pointer;
+  }
+  .demo .guess-outcome-btn.selected { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .demo .match-accuracy { font-size: 0.8rem; color: var(--ink-muted); margin-top: 1rem; }
+
+  /* How this works (collapsible pipeline diagram) */
+  .demo .how-it-works { margin-top: 1.6rem; border-top: 1px dashed var(--line); padding-top: 1.1rem; }
+  .demo .how-it-works summary {
+    cursor: pointer; font-size: 0.88rem; font-weight: 600; color: var(--accent-strong);
+    list-style: none; display: flex; align-items: center; gap: 0.4rem; user-select: none;
+  }
+  .demo .how-it-works summary::-webkit-details-marker { display: none; }
+  .demo .how-it-works summary .chev { display: inline-block; transition: transform 0.2s ease; font-size: 0.75rem; }
+  .demo .how-it-works[open] summary .chev { transform: rotate(90deg); }
+  .demo .how-it-works .hiw-body { padding-top: 1rem; }
+  .demo .how-it-works .hiw-sub { font-size: 0.8rem; color: var(--ink-muted); margin-bottom: 0.2rem; }
+
+  .demo .hpipe-scroll { overflow-x: auto; margin: 0.8rem 0 0; padding-bottom: 0.6rem; }
+  .demo .hpipe { display: flex; align-items: stretch; gap: 0; min-width: 1300px; }
+  .demo .hpipe-col { display: flex; flex-direction: column; gap: 0.5rem; width: 138px; flex-shrink: 0; }
+  .demo .hpipe-col.single { justify-content: center; }
+  .demo .hpipe-head {
+    display: flex; flex-direction: column; gap: 0.12rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-muted);
+    margin-bottom: 0.25rem; min-height: 2.2em;
+  }
+  .demo .hpipe-head span { font-size: 0.64rem; color: var(--accent-strong); letter-spacing: 0.02em; text-transform: none; font-weight: 600; }
+  .demo .hpipe-arrow { display: flex; align-items: center; justify-content: center; width: 24px; flex-shrink: 0; color: var(--ink-muted); font-size: 0.95rem; padding-top: 2.4em; }
+  .demo .hpipe-card {
+    background: var(--surface-2); border: 1px solid var(--line); border-radius: 6px;
+    padding: 0.55rem 0.65rem; font-size: 0.68rem; flex: 1;
+  }
+  .demo .hpipe-card.tall { display: flex; flex-direction: column; justify-content: center; flex: 1; }
+  .demo .hpipe-card.data { border-top: 3px solid var(--accent2); }
+  .demo .hpipe-card.proc { border-top: 3px solid var(--accent); }
+  .demo .hpipe-card.result { border-top: 3px solid var(--accent-strong); }
+  .demo .hpipe-card.result.good { background: var(--accent-wash); }
+  .demo .hpipe-card .t { font-weight: 700; color: var(--ink); margin-bottom: 0.2rem; font-size: 0.7rem; }
+  .demo .hpipe-card .d { color: var(--ink-2); line-height: 1.4; }
+
+  .demo .footnote { font-size: 0.78rem; color: var(--ink-muted); margin-top: 2rem; }
+  .demo .footnote a { color: var(--accent); }
+</style>
+
+<div class="demo">
+  <div class="masthead">
+    <div class="wrap">
+      <p class="kicker">Data 780 &middot; Live Model Demo (v3)</p>
+      <h1>Try the World Cup Models Yourself</h1>
+      <p class="dek">Every number below runs real, fitted models &mdash; live, in your browser. Predict a team's tournament scoring margin, browse the full 48-team result set, or predict an actual match's outcome with Poisson and XGBoost.</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="revision-note">
+      <b>Updated:</b> now includes Henmi's Poisson and XGBoost match-outcome models (see the "Predict a Match" tab), a full 48-team leaderboard, and a guess-before-you-reveal mode so you can test yourself against the models.
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="real">Pick a real 2026 team</button>
+      <button class="tab-btn" data-tab="build">Build a hypothetical team</button>
+      <button class="tab-btn" data-tab="leaderboard">All 48 teams</button>
+      <button class="tab-btn" data-tab="match">Predict a match</button>
+    </div>
+
+    <!-- ============ REAL TEAM TAB ============ -->
+    <div class="tab-panel active" id="tab-real">
+      <div class="panel">
+        <div class="field-row">
+          <select id="team-select"></select>
+          <button class="btn ghost" id="shuffle-btn" type="button">Random team</button>
+        </div>
+        <div class="team-meta" id="team-meta"></div>
+      </div>
+
+      <div class="panel predict-panel">
+        <h3>Model predictions for this team</h3>
+        <p class="sub">Standardized on 2010&ndash;2022 training data, computed live &mdash; goals/game scoring margin. Click a model to pin it.</p>
+        <div id="real-bars"></div>
+
+        <div class="guess-box">
+          <div class="slider-field">
+            <label>Your guess (goals/game) <span class="v" id="guess-val">0.00</span></label>
+            <input type="range" id="guess-slider" min="-4" max="2" step="0.05" value="0">
+          </div>
+          <div class="btn-row">
+            <button class="btn ghost" id="lock-guess-btn" type="button">Lock in guess</button>
+            <button class="btn" id="reveal-btn" type="button">Reveal actual result</button>
+          </div>
+        </div>
+
+        <div class="reveal-box" id="reveal-box"></div>
+        <div class="chart-legend">
+          <span><i style="background:var(--accent)"></i> predicted</span>
+          <span><i class="line"></i> actual (after reveal)</span>
+          <span><i class="dash"></i> your guess</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ BUILD TAB ============ -->
+    <div class="tab-panel" id="tab-build">
+      <div class="panel">
+        <div class="slider-field">
+          <label>FIFA Ordinal Rank (1 = best) <span class="v" id="or-val">15</span></label>
+          <input type="range" id="or-slider" min="1" max="120" step="1" value="15">
+        </div>
+        <div class="slider-field" style="margin-top:0.9rem;">
+          <label>FIFA Ranking Points <span class="v" id="rp-val">1400</span></label>
+          <input type="range" id="rp-slider" min="700" max="2000" step="1" value="1400">
+        </div>
+        <div class="league-grid" id="league-sliders"></div>
+        <div class="t5-total" id="t5-total"></div>
+      </div>
+
+      <div class="panel predict-panel">
+        <h3>Live predicted scoring margin</h3>
+        <p class="sub">Updates as you move the sliders &mdash; no real team behind these numbers, just the model. Click a model to pin it.</p>
+        <div id="build-bars"></div>
+        <div class="chart-legend"><span><i style="background:var(--accent)"></i> predicted</span></div>
+      </div>
+    </div>
+
+    <!-- ============ LEADERBOARD TAB ============ -->
+    <div class="tab-panel" id="tab-leaderboard">
+      <div class="panel">
+        <div class="lb-controls">
+          <label class="mono" style="font-size:0.8rem; color:var(--ink-2);">Predicted-by model:</label>
+          <select id="lb-model-select"></select>
+        </div>
+        <div class="lb-scroll">
+          <table class="lb" id="lb-table">
+            <thead>
+              <tr>
+                <th data-sort="team">Team<span class="arrow"></span></th>
+                <th data-sort="actual" class="num">Actual<span class="arrow"></span></th>
+                <th data-sort="predicted" class="num">Predicted<span class="arrow"></span></th>
+                <th data-sort="error" class="num">Abs. Error<span class="arrow"></span></th>
+              </tr>
+            </thead>
+            <tbody id="lb-body"></tbody>
+          </table>
+        </div>
+        <p class="hint">All 48 teams from the real, concluded 2026 World Cup. Click a column header to sort. Switch the model above to see how each one did across the whole field, not just one team at a time.</p>
+      </div>
+    </div>
+
+    <!-- ============ MATCH TAB ============ -->
+    <div class="tab-panel" id="tab-match">
+      <div class="panel">
+        <div class="field-row">
+          <select id="match-select"></select>
+          <button class="btn ghost" id="match-shuffle-btn" type="button">Random match</button>
+        </div>
+        <div class="match-teams" id="match-teams"></div>
+        <div class="guess-outcome-btns" id="guess-outcome-btns">
+          <button class="guess-outcome-btn" data-outcome="home_win" type="button">Home win</button>
+          <button class="guess-outcome-btn" data-outcome="draw" type="button">Draw</button>
+          <button class="guess-outcome-btn" data-outcome="away_win" type="button">Away win</button>
+        </div>
+      </div>
+
+      <div class="panel predict-panel">
+        <h3>What Poisson and XGBoost predicted</h3>
+        <p class="sub">Both models are fit on 3,728 international matches (2018 through just before the 2026 tournament) and were never shown this match's result.</p>
+        <div class="prob-group">
+          <h4>Poisson (team + opponent + home advantage)</h4>
+          <div id="poisson-bars"></div>
+        </div>
+        <div class="prob-group">
+          <h4>XGBoost (ELO ratings + player performance stats)</h4>
+          <div id="xgb-bars"></div>
+        </div>
+        <button class="btn" id="match-reveal-btn" type="button">Reveal actual result</button>
+        <div class="reveal-box" id="match-reveal-box"></div>
+        <p class="match-accuracy">Fair-comparison accuracy across all 83 usable 2026 matches: Poisson 68.7%, XGBoost 63.9%. Both models struggle specifically with draws.</p>
+
+        <details class="how-it-works">
+          <summary><span class="chev">&#9656;</span> How this works: the data pipeline behind these two models</summary>
+          <div class="hiw-body">
+            <p class="hiw-sub">Redrawn from Henmi's own pipeline diagram. Full write-up in the findings report.</p>
+            <div class="hpipe-scroll">
+              <div class="hpipe">
+
+                <div class="hpipe-col">
+                  <div class="hpipe-head">Stage 1<span>Raw Data Sources</span></div>
+                  <div class="hpipe-card data">
+                    <div class="t">Player Statistics</div>
+                    <div class="d">API-Football, 2023&ndash;2025<br>19,305 raw rows</div>
+                  </div>
+                  <div class="hpipe-card data">
+                    <div class="t">Elo Ratings</div>
+                    <div class="d">eloratings.net, 2018&ndash;2026<br>48 nations, annual snapshots</div>
+                  </div>
+                  <div class="hpipe-card data">
+                    <div class="t">Match Results</div>
+                    <div class="d">1872&ndash;2026, filtered to 2018&ndash;2026<br>48 qualified teams</div>
+                  </div>
+                </div>
+
+                <div class="hpipe-arrow">&rarr;</div>
+
+                <div class="hpipe-col">
+                  <div class="hpipe-head">Stage 2<span>Cleaning &amp; Integrity</span></div>
+                  <div class="hpipe-card proc">
+                    <div class="d">&bull; Filter minutes &gt; 0<br>&bull; Drop pass_accuracy_pct (64.6% missing)<br>&bull; Split club vs. intl<br>&bull; Null shots for GKs</div>
+                  </div>
+                  <div class="hpipe-card proc">
+                    <div class="d">&bull; Drop wc2026_exit_round (target leakage)<br>&bull; Resolve naming mismatches</div>
+                  </div>
+                  <div class="hpipe-card proc">
+                    <div class="d">&bull; Restrict to 2018&ndash;2026<br>&bull; Qualified-team matches only<br>&bull; Add tier flag</div>
+                  </div>
+                </div>
+
+                <div class="hpipe-arrow">&rarr;</div>
+
+                <div class="hpipe-col">
+                  <div class="hpipe-head">Stage 3<span>Aggregation &amp; Features</span></div>
+                  <div class="hpipe-card proc">
+                    <div class="t">Player &rarr; Team Features</div>
+                    <div class="d">Minutes-weighted rating, summed stats, averaged across roster</div>
+                  </div>
+                  <div class="hpipe-card proc">
+                    <div class="t">Time-Aware Elo Join</div>
+                    <div class="d">Backward-looking merge &mdash; rating as of each match's actual date</div>
+                  </div>
+                  <div class="hpipe-card proc">
+                    <div class="t">Difference Features</div>
+                    <div class="d">home &minus; away for every Elo &amp; player statistic</div>
+                  </div>
+                </div>
+
+                <div class="hpipe-arrow">&rarr;</div>
+
+                <div class="hpipe-col single">
+                  <div class="hpipe-head">Stage 4<span>Final Feature Table</span></div>
+                  <div class="hpipe-card data tall">
+                    <div class="t">Final Match Feature Table</div>
+                    <div class="d">104 matches &times; Elo + player diffs</div>
+                  </div>
+                </div>
+
+                <div class="hpipe-arrow">&rarr;</div>
+
+                <div class="hpipe-col">
+                  <div class="hpipe-head">Stage 5<span>Walk-Forward Split</span></div>
+                  <div class="hpipe-card data">
+                    <div class="t">Train</div>
+                    <div class="d">Matches before 2026-06-11</div>
+                  </div>
+                  <div class="hpipe-card data">
+                    <div class="t">Test</div>
+                    <div class="d">Actual 2026 World Cup matches (104)</div>
+                  </div>
+                </div>
+
+                <div class="hpipe-arrow">&rarr;</div>
+
+                <div class="hpipe-col">
+                  <div class="hpipe-head">Stage 6<span>Models</span></div>
+                  <div class="hpipe-card proc">
+                    <div class="t">Poisson Baseline</div>
+                    <div class="d mono" style="font-size:0.62rem;">goals ~ team + opponent + is_home</div>
+                  </div>
+                  <div class="hpipe-card proc">
+                    <div class="t">XGBoost Classifier</div>
+                    <div class="d">3-class, trained on Elo + player diffs</div>
+                  </div>
+                </div>
+
+                <div class="hpipe-arrow">&rarr;</div>
+
+                <div class="hpipe-col single">
+                  <div class="hpipe-head">Stage 7<span>Fair Evaluation</span></div>
+                  <div class="hpipe-card proc tall">
+                    <div class="d">Both models scored on the same 83-match subset</div>
+                  </div>
+                </div>
+
+                <div class="hpipe-arrow">&rarr;</div>
+
+                <div class="hpipe-col">
+                  <div class="hpipe-head">Results</div>
+                  <div class="hpipe-card result good">
+                    <div class="t">Poisson</div>
+                    <div class="d">68.7% accuracy, RPS 0.145<br>0% draw recall</div>
+                  </div>
+                  <div class="hpipe-card result">
+                    <div class="t">XGBoost</div>
+                    <div class="d">63.9% accuracy, RPS 0.153<br>22.2% draw recall</div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <div class="chart-legend">
+              <span><i style="background:var(--accent2)"></i> data</span>
+              <span><i style="background:var(--accent)"></i> process</span>
+              <span><i style="background:var(--accent-strong)"></i> result</span>
+            </div>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <p class="footnote">Full write-up: the consolidated findings report in the same folder. All coefficients, model weights, and match predictions are embedded in this page's source &mdash; nothing is faked or looked up live.</p>
+  </div>
+</div>
+
+<script id="model-data" type="application/json">{"standardization": {"Y_mean": -0.19696800595238095, "Y_std_dev": 0.9768893909733771, "RP_mean": 1092.4653125, "RP_std_dev": 377.47457276520936, "OR_mean": 23.71875, "OR_std_dev": 19.537199093971992, "EPL_mean": 0.14963942307692307, "EPL_std_dev": 0.18456245023292844, "La_Liga_mean": 0.09253501254180602, "La_Liga_std_dev": 0.13875179322717693, "Bundesliga_mean": 0.096846258361204, "Bundesliga_std_dev": 0.1514911712117476, "Serie_A_mean": 0.09222146739130435, "Serie_A_std_dev": 0.13928215166817018, "Ligue_1_mean": 0.06204274665551839, "Ligue_1_std_dev": 0.087026297699021, "t5league_mean": 0.49328490802675584, "t5league_std_dev": 0.2988170631079287}, "linear_coefs": {"RP_only": [0.2907071298722004, 8.869129306638753e-17], "OR_only": [-0.5010028884720478, 5.4779806653627015e-18], "t5league_only": [0.475247120923779, -3.585470363925035e-17], "individual_leagues_only": [0.2744133814699167, 0.2887974427361291, 0.297742492394416, 0.17242607889854, 0.06416603144362637, -3.2097092543357e-17], "t5l_RP": [0.1084446638200663, 0.42919486475495244, -5.585483451182875e-17], "ind_lg_RP": [0.09696202985097777, 0.25186589533776216, 0.25785136369433814, 0.27975238028498634, 0.15347453518564047, 0.05977541097654837, -2.9061706325065796e-17], "t5l_OR": [-0.3330678109542322, 0.26067107302392306, 9.353115746491502e-18], "ind_lg_OR": [-0.3334570824987381, 0.1493923165763838, 0.16546529274316416, 0.19664800433864807, 0.0476410144414125, 0.03704452431212307, -3.52626949997116e-17]}, "nn_weights": {"W1": [[1.0689526435002856, 0.7494946529534451, 0.33301054930581614, -1.3968857358366802, 0.6341856412674727, 1.2238362023914022, 0.35946752918069896, -0.25767198397222146], [1.7963660345147652, -2.1102265485622467, 0.4046388626809751, -0.620211644637966, 0.06891695217067093, 1.3441218157511294, -2.538972460493801, -1.1375738076851605], [0.2120732044782273, 1.884489547701407, 1.9698017206355591, -1.1827274159132124, 0.09068817304325959, 0.3973768063416503, 1.0966753435375736, -2.6237746635242685], [0.6487733713203125, 0.2018329592593001, 0.08530983929628705, -0.031231032064194593, 0.07378442884451086, 0.28855463285427874, 0.2647852253052249, -0.3575241347601274], [-0.16014047141186433, 0.8091399360790504, -0.8846056533579328, -0.11395571400907416, 0.643139553448459, -0.3161644755514724, 0.8348525777897589, 1.1793267499593016], [1.416378800762285, 0.3657711794988665, 0.11356176621324086, -2.4659601772729776, 1.1166917235050027, 1.775912300922155, 0.2820453933829762, -0.6388334884236869]], "b1": [-1.4023204391314041, -1.8945786215150098, -0.7329534462889252, -0.9085056797013377, 1.4736186599221675, -1.3829846160167114, -1.9825038151394836, -1.1427243675408492], "W2": [[1.6865904132004157], [-3.0740255266817877], [1.4180538679033377], [1.197334760171106], [1.2120917162878353], [-2.3198507341751213], [3.366025198973159], [-1.1612039828917013]], "b2": [-1.8031913164852715]}, "results_2026": [{"Model": "Ordinal Rank + t5league (aggregate)", "RMSE": 0.9308316665661778, "MAE": 0.7588468907973942}, {"Model": "Ordinal Rank + individual leagues", "RMSE": 0.9387454224688803, "MAE": 0.7661743601495372}, {"Model": "Ordinal Rank only", "RMSE": 0.9729195594424407, "MAE": 0.788607521495018}, {"Model": "t5league only (aggregate)", "RMSE": 1.0449631418590606, "MAE": 0.8360483347202831}, {"Model": "RP + t5league (aggregate)", "RMSE": 1.045185986624121, "MAE": 0.8081609032229876}, {"Model": "RP + individual leagues", "RMSE": 1.0527862187994197, "MAE": 0.816910545676988}, {"Model": "Individual leagues only", "RMSE": 1.0539786598559895, "MAE": 0.8503606093561794}, {"Model": "Neural network (Ordinal Rank + individual leagues)", "RMSE": 1.1531251745145754, "MAE": 0.8842179128260712}, {"Model": "Ranking Points only", "RMSE": 1.3326330920369076, "MAE": 1.0098328299741468}], "teams_2026": [{"team": "Spain", "fifa_rank": 2.0, "fifa_ranking_points": 1874.71, "top5_epl_players": 7, "top5_laliga_players": 17, "top5_bundesliga_players": 1, "top5_ligue1_players": 1, "top5_seriea_players": 0, "t5league_players": 26, "mean_scoring_margin": 1.625}, {"team": "Germany", "fifa_rank": 10.0, "fifa_ranking_points": 1735.77, "top5_epl_players": 5, "top5_laliga_players": 1, "top5_bundesliga_players": 20, "top5_ligue1_players": 0, "top5_seriea_players": 0, "t5league_players": 26, "mean_scoring_margin": 1.5}, {"team": "Netherlands", "fifa_rank": 8.0, "fifa_ranking_points": 1753.57, "top5_epl_players": 16, "top5_laliga_players": 1, "top5_bundesliga_players": 1, "top5_ligue1_players": 1, "top5_seriea_players": 4, "t5league_players": 23, "mean_scoring_margin": 1.5}, {"team": "Mexico", "fifa_rank": 14.0, "fifa_ranking_points": 1687.48, "top5_epl_players": 2, "top5_laliga_players": 2, "top5_bundesliga_players": 0, "top5_ligue1_players": 0, "top5_seriea_players": 2, "t5league_players": 6, "mean_scoring_margin": 1.4}, {"team": "Argentina", "fifa_rank": 1.0, "fifa_ranking_points": 1877.27, "top5_epl_players": 6, "top5_laliga_players": 7, "top5_bundesliga_players": 1, "top5_ligue1_players": 5, "top5_seriea_players": 2, "t5league_players": 21, "mean_scoring_margin": 1.375}, {"team": "France", "fifa_rank": 3.0, "fifa_ranking_points": 1870.7, "top5_epl_players": 7, "top5_laliga_players": 3, "top5_bundesliga_players": 2, "top5_ligue1_players": 8, "top5_seriea_players": 4, "t5league_players": 24, "mean_scoring_margin": 1.25}, {"team": "Brazil", "fifa_rank": 6.0, "fifa_ranking_points": 1765.86, "top5_epl_players": 8, "top5_laliga_players": 2, "top5_bundesliga_players": 0, "top5_ligue1_players": 2, "top5_seriea_players": 3, "t5league_players": 15, "mean_scoring_margin": 1.2}, {"team": "Belgium", "fifa_rank": 9.0, "fifa_ranking_points": 1742.24, "top5_epl_players": 7, "top5_laliga_players": 2, "top5_bundesliga_players": 1, "top5_ligue1_players": 5, "top5_seriea_players": 5, "t5league_players": 20, "mean_scoring_margin": 1.1666666666666667}, {"team": "England", "fifa_rank": 4.0, "fifa_ranking_points": 1828.02, "top5_epl_players": 21, "top5_laliga_players": 3, "top5_bundesliga_players": 2, "top5_ligue1_players": 0, "top5_seriea_players": 0, "t5league_players": 26, "mean_scoring_margin": 1.0}, {"team": "Portugal", "fifa_rank": 5.0, "fifa_ranking_points": 1767.85, "top5_epl_players": 7, "top5_laliga_players": 4, "top5_bundesliga_players": 0, "top5_ligue1_players": 4, "top5_seriea_players": 2, "t5league_players": 17, "mean_scoring_margin": 1.0}, {"team": "Colombia", "fifa_rank": 13.0, "fifa_ranking_points": 1698.35, "top5_epl_players": 2, "top5_laliga_players": 2, "top5_bundesliga_players": 1, "top5_ligue1_players": 1, "top5_seriea_players": 2, "t5league_players": 8, "mean_scoring_margin": 0.8}, {"team": "Japan", "fifa_rank": 18.0, "fifa_ranking_points": 1661.58, "top5_epl_players": 3, "top5_laliga_players": 1, "top5_bundesliga_players": 7, "top5_ligue1_players": 1, "top5_seriea_players": 1, "t5league_players": 13, "mean_scoring_margin": 0.75}, {"team": "Morocco", "fifa_rank": 7.0, "fifa_ranking_points": 1755.1, "top5_epl_players": 4, "top5_laliga_players": 4, "top5_bundesliga_players": 2, "top5_ligue1_players": 6, "top5_seriea_players": 1, "t5league_players": 17, "mean_scoring_margin": 0.6666666666666666}, {"team": "Switzerland", "fifa_rank": 19.0, "fifa_ranking_points": 1650.06, "top5_epl_players": 4, "top5_laliga_players": 4, "top5_bundesliga_players": 8, "top5_ligue1_players": 3, "top5_seriea_players": 4, "t5league_players": 23, "mean_scoring_margin": 0.6666666666666666}, {"team": "United States", "fifa_rank": 17.0, "fifa_ranking_points": 1671.23, "top5_epl_players": 4, "top5_laliga_players": 1, "top5_bundesliga_players": 3, "top5_ligue1_players": 3, "top5_seriea_players": 2, "t5league_players": 13, "mean_scoring_margin": 0.6}, {"team": "Canada", "fifa_rank": 30.0, "fifa_ranking_points": 1559.48, "top5_epl_players": 1, "top5_laliga_players": 3, "top5_bundesliga_players": 1, "top5_ligue1_players": 2, "top5_seriea_players": 2, "t5league_players": 9, "mean_scoring_margin": 0.6}, {"team": "Norway", "fifa_rank": 31.0, "fifa_ranking_points": 1557.44, "top5_epl_players": 7, "top5_laliga_players": 2, "top5_bundesliga_players": 3, "top5_ligue1_players": 0, "top5_seriea_players": 5, "t5league_players": 17, "mean_scoring_margin": 0.3333333333333333}, {"team": "Senegal", "fifa_rank": 15.0, "fifa_ranking_points": 1684.07, "top5_epl_players": 7, "top5_laliga_players": 2, "top5_bundesliga_players": 2, "top5_ligue1_players": 8, "top5_seriea_players": 1, "t5league_players": 20, "mean_scoring_margin": 0.25}, {"team": "Ivory Coast", "fifa_rank": 33.0, "fifa_ranking_points": 1540.87, "top5_epl_players": 3, "top5_laliga_players": 1, "top5_bundesliga_players": 2, "top5_ligue1_players": 4, "top5_seriea_players": 3, "t5league_players": 13, "mean_scoring_margin": 0.25}, {"team": "Egypt", "fifa_rank": 29.0, "fifa_ranking_points": 1562.37, "top5_epl_players": 2, "top5_laliga_players": 1, "top5_bundesliga_players": 0, "top5_ligue1_players": 1, "top5_seriea_players": 0, "t5league_players": 4, "mean_scoring_margin": 0.2}, {"team": "DR Congo", "fifa_rank": 46.0, "fifa_ranking_points": 1474.43, "top5_epl_players": 4, "top5_laliga_players": 2, "top5_bundesliga_players": 0, "top5_ligue1_players": 4, "top5_seriea_players": 0, "t5league_players": 10, "mean_scoring_margin": 0.0}, {"team": "Australia", "fifa_rank": 27.0, "fifa_ranking_points": 1579.34, "top5_epl_players": 0, "top5_laliga_players": 1, "top5_bundesliga_players": 2, "top5_ligue1_players": 0, "top5_seriea_players": 2, "t5league_players": 5, "mean_scoring_margin": 0.0}, {"team": "Iran", "fifa_rank": 20.0, "fifa_ranking_points": 1619.58, "top5_epl_players": 0, "top5_laliga_players": 0, "top5_bundesliga_players": 0, "top5_ligue1_players": 0, "top5_seriea_players": 0, "t5league_players": 0, "mean_scoring_margin": 0.0}, {"team": "Croatia", "fifa_rank": 11.0, "fifa_ranking_points": 1714.87, "top5_epl_players": 2, "top5_laliga_players": 3, "top5_bundesliga_players": 5, "top5_ligue1_players": 0, "top5_seriea_players": 7, "t5league_players": 17, "mean_scoring_margin": -0.25}, {"team": "Cape Verde", "fifa_rank": 67.0, "fifa_ranking_points": 1371.11, "top5_epl_players": 0, "top5_laliga_players": 1, "top5_bundesliga_players": 0, "top5_ligue1_players": 0, "top5_seriea_players": 0, "t5league_players": 1, "mean_scoring_margin": -0.25}, {"team": "Ghana", "fifa_rank": 73.0, "fifa_ranking_points": 1346.88, "top5_epl_players": 1, "top5_laliga_players": 4, "top5_bundesliga_players": 1, "top5_ligue1_players": 6, "top5_seriea_players": 0, "t5league_players": 12, "mean_scoring_margin": -0.25}, {"team": "Uruguay", "fifa_rank": 16.0, "fifa_ranking_points": 1673.07, "top5_epl_players": 3, "top5_laliga_players": 4, "top5_bundesliga_players": 0, "top5_ligue1_players": 0, "top5_seriea_players": 1, "t5league_players": 8, "mean_scoring_margin": -0.3333333333333333}, {"team": "South Korea", "fifa_rank": 25.0, "fifa_ranking_points": 1591.63, "top5_epl_players": 1, "top5_laliga_players": 0, "top5_bundesliga_players": 3, "top5_ligue1_players": 1, "top5_seriea_players": 0, "t5league_players": 5, "mean_scoring_margin": -0.3333333333333333}, {"team": "Ecuador", "fifa_rank": 23.0, "fifa_ranking_points": 1598.52, "top5_epl_players": 3, "top5_laliga_players": 0, "top5_bundesliga_players": 1, "top5_ligue1_players": 1, "top5_seriea_players": 1, "t5league_players": 6, "mean_scoring_margin": -0.5}, {"team": "South Africa", "fifa_rank": 60.0, "fifa_ranking_points": 1428.38, "top5_epl_players": 1, "top5_laliga_players": 0, "top5_bundesliga_players": 0, "top5_ligue1_players": 0, "top5_seriea_players": 0, "t5league_players": 1, "mean_scoring_margin": -0.5}, {"team": "Paraguay", "fifa_rank": 41.0, "fifa_ranking_points": 1505.35, "top5_epl_players": 2, "top5_laliga_players": 0, "top5_bundesliga_players": 0, "top5_ligue1_players": 1, "top5_seriea_players": 1, "t5league_players": 4, "mean_scoring_margin": -0.6}, {"team": "Turkiye", "fifa_rank": 22.0, "fifa_ranking_points": 1605.73, "top5_epl_players": 2, "top5_laliga_players": 1, "top5_bundesliga_players": 3, "top5_ligue1_players": 0, "top5_seriea_players": 3, "t5league_players": 9, "mean_scoring_margin": -0.6666666666666666}, {"team": "Sweden", "fifa_rank": 38.0, "fifa_ranking_points": 1509.79, "top5_epl_players": 8, "top5_laliga_players": 1, "top5_bundesliga_players": 3, "top5_ligue1_players": 0, "top5_seriea_players": 3, "t5league_players": 15, "mean_scoring_margin": -0.75}, {"team": "Austria", "fifa_rank": 24.0, "fifa_ranking_points": 1597.4, "top5_epl_players": 1, "top5_laliga_players": 2, "top5_bundesliga_players": 14, "top5_ligue1_players": 0, "top5_seriea_players": 0, "t5league_players": 17, "mean_scoring_margin": -0.75}, {"team": "Bosnia and Herzegovina", "fifa_rank": 64.0, "fifa_ranking_points": 1387.22, "top5_epl_players": 0, "top5_laliga_players": 0, "top5_bundesliga_players": 3, "top5_ligue1_players": 1, "top5_seriea_players": 2, "t5league_players": 6, "mean_scoring_margin": -0.75}, {"team": "Scotland", "fifa_rank": 42.0, "fifa_ranking_points": 1503.34, "top5_epl_players": 8, "top5_laliga_players": 0, "top5_bundesliga_players": 0, "top5_ligue1_players": 0, "top5_seriea_players": 4, "t5league_players": 12, "mean_scoring_margin": -1.0}, {"team": "Algeria", "fifa_rank": 28.0, "fifa_ranking_points": 1571.03, "top5_epl_players": 1, "top5_laliga_players": 0, "top5_bundesliga_players": 4, "top5_ligue1_players": 5, "top5_seriea_players": 1, "t5league_players": 11, "mean_scoring_margin": -1.0}, {"team": "Czechia", "fifa_rank": 40.0, "fifa_ranking_points": 1505.74, "top5_epl_players": 2, "top5_laliga_players": 0, "top5_bundesliga_players": 4, "top5_ligue1_players": 1, "top5_seriea_players": 0, "t5league_players": 7, "mean_scoring_margin": -1.3333333333333333}, {"team": "Saudi Arabia", "fifa_rank": 61.0, "fifa_ranking_points": 1423.88, "top5_epl_players": 0, "top5_laliga_players": 0, "top5_bundesliga_players": 0, "top5_ligue1_players": 1, "top5_seriea_players": 0, "t5league_players": 1, "mean_scoring_margin": -1.3333333333333333}, {"team": "Panama", "fifa_rank": 34.0, "fifa_ranking_points": 1539.16, "top5_epl_players": 0, "top5_laliga_players": 0, "top5_bundesliga_players": 0, "top5_ligue1_players": 0, "top5_seriea_players": 0, "t5league_players": 0, "mean_scoring_margin": -1.3333333333333333}, {"team": "Jordan", "fifa_rank": 63.0, "fifa_ranking_points": 1387.74, "top5_epl_players": 0, "top5_laliga_players": 0, "top5_bundesliga_players": 0, "top5_ligue1_players": 1, "top5_seriea_players": 0, "t5league_players": 1, "mean_scoring_margin": -1.6666666666666667}, {"team": "New Zealand", "fifa_rank": 85.0, "fifa_ranking_points": 1275.58, "top5_epl_players": 1, "top5_laliga_players": 0, "top5_bundesliga_players": 0, "top5_ligue1_players": 0, "top5_seriea_players": 0, "t5league_players": 1, "mean_scoring_margin": -2.0}, {"team": "Haiti", "fifa_rank": 83.0, "fifa_ranking_points": 1293.1, "top5_epl_players": 2, "top5_laliga_players": 0, "top5_bundesliga_players": 0, "top5_ligue1_players": 2, "top5_seriea_players": 0, "t5league_players": 4, "mean_scoring_margin": -2.0}, {"team": "Qatar", "fifa_rank": 56.0, "fifa_ranking_points": 1450.31, "top5_epl_players": 0, "top5_laliga_players": 0, "top5_bundesliga_players": 0, "top5_ligue1_players": 0, "top5_seriea_players": 0, "t5league_players": 0, "mean_scoring_margin": -2.6666666666666665}, {"team": "Curacao", "fifa_rank": 82.0, "fifa_ranking_points": 1294.77, "top5_epl_players": 0, "top5_laliga_players": 0, "top5_bundesliga_players": 0, "top5_ligue1_players": 0, "top5_seriea_players": 0, "t5league_players": 0, "mean_scoring_margin": -2.6666666666666665}, {"team": "Uzbekistan", "fifa_rank": 50.0, "fifa_ranking_points": 1458.73, "top5_epl_players": 1, "top5_laliga_players": 0, "top5_bundesliga_players": 0, "top5_ligue1_players": 0, "top5_seriea_players": 0, "t5league_players": 1, "mean_scoring_margin": -3.0}, {"team": "Tunisia", "fifa_rank": 45.0, "fifa_ranking_points": 1476.41, "top5_epl_players": 1, "top5_laliga_players": 0, "top5_bundesliga_players": 3, "top5_ligue1_players": 3, "top5_seriea_players": 0, "t5league_players": 7, "mean_scoring_margin": -3.3333333333333335}, {"team": "Iraq", "fifa_rank": 57.0, "fifa_ranking_points": 1446.28, "top5_epl_players": 0, "top5_laliga_players": 0, "top5_bundesliga_players": 0, "top5_ligue1_players": 0, "top5_seriea_players": 0, "t5league_players": 0, "mean_scoring_margin": -3.6666666666666665}]}</script>
+<script id="henmi-data" type="application/json">{"accuracy": {"poisson": 0.6867469879518072, "xgboost": 0.6385542168674698, "n_matches": 83}, "matches": [{"date": "2026-06-11", "home_team": "Mexico", "away_team": "South Africa", "home_score": 2, "away_score": 0, "actual_result": "home_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.5801798280111492, "draw": 0.2615518698951637, "away_win": 0.1582677696844227}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.6627647280693054, "draw": 0.28993913531303406, "away_win": 0.047296155244112015}}, {"date": "2026-06-13", "home_team": "Qatar", "away_team": "Switzerland", "home_score": 1, "away_score": 1, "actual_result": "draw", "poisson_pred": "away_win", "poisson_probs": {"home_win": 0.1335558211511414, "draw": 0.1757793414061356, "away_win": 0.6906248215114625}, "xgb_pred": "away_win", "xgb_probs": {"home_win": 0.1804085224866867, "draw": 0.07346154749393463, "away_win": 0.7461299300193787}}, {"date": "2026-06-13", "home_team": "Brazil", "away_team": "Morocco", "home_score": 1, "away_score": 1, "actual_result": "draw", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.5900211440739267, "draw": 0.2622375231993066, "away_win": 0.14774083264980964}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.6256447434425354, "draw": 0.3166195750236511, "away_win": 0.05773567780852318}}, {"date": "2026-06-13", "home_team": "Haiti", "away_team": "Scotland", "home_score": 0, "away_score": 1, "actual_result": "away_win", "poisson_pred": "away_win", "poisson_probs": {"home_win": 0.17427029383490597, "draw": 0.2037587868996103, "away_win": 0.621958444092912}, "xgb_pred": "away_win", "xgb_probs": {"home_win": 0.04184697940945625, "draw": 0.04328479245305061, "away_win": 0.9148682355880737}}, {"date": "2026-06-14", "home_team": "Germany", "away_team": "Cura\u00e7ao", "home_score": 7, "away_score": 1, "actual_result": "home_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.9409826331847675, "draw": 0.03928137092023307, "away_win": 0.01435341800951924}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.8465014696121216, "draw": 0.1028488501906395, "away_win": 0.05064962059259415}}, {"date": "2026-06-14", "home_team": "Ivory Coast", "away_team": "Ecuador", "home_score": 1, "away_score": 0, "actual_result": "home_win", "poisson_pred": "away_win", "poisson_probs": {"home_win": 0.3199237540340461, "draw": 0.31926943999229185, "away_win": 0.3608067939918649}, "xgb_pred": "draw", "xgb_probs": {"home_win": 0.3092287480831146, "draw": 0.46022653579711914, "away_win": 0.23054474592208862}}, {"date": "2026-06-14", "home_team": "Netherlands", "away_team": "Japan", "home_score": 2, "away_score": 2, "actual_result": "draw", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.5785953255939453, "draw": 0.22130501833985908, "away_win": 0.20009441117211263}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.45025938749313354, "draw": 0.3440553843975067, "away_win": 0.20568516850471497}}, {"date": "2026-06-14", "home_team": "Sweden", "away_team": "Tunisia", "home_score": 5, "away_score": 1, "actual_result": "home_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.44565043319795367, "draw": 0.28607507459690196, "away_win": 0.26827437734280785}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.5869295001029968, "draw": 0.0949632078409195, "away_win": 0.3181073069572449}}, {"date": "2026-06-15", "home_team": "Belgium", "away_team": "Egypt", "home_score": 1, "away_score": 1, "actual_result": "draw", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.6973724976110189, "draw": 0.19517749718778313, "away_win": 0.10744132349316543}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.7236433625221252, "draw": 0.16604916751384735, "away_win": 0.1103074848651886}}, {"date": "2026-06-15", "home_team": "Iran", "away_team": "New Zealand", "home_score": 2, "away_score": 2, "actual_result": "draw", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.6953980377658031, "draw": 0.21279335056084525, "away_win": 0.09180563876669186}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.43118733167648315, "draw": 0.33313292264938354, "away_win": 0.2356797158718109}}, {"date": "2026-06-15", "home_team": "Saudi Arabia", "away_team": "Uruguay", "home_score": 1, "away_score": 1, "actual_result": "draw", "poisson_pred": "away_win", "poisson_probs": {"home_win": 0.1278733704228179, "draw": 0.2529214686227316, "away_win": 0.6192044635045213}, "xgb_pred": "away_win", "xgb_probs": {"home_win": 0.07262999564409256, "draw": 0.19632694125175476, "away_win": 0.7310430407524109}}, {"date": "2026-06-16", "home_team": "France", "away_team": "Senegal", "home_score": 3, "away_score": 1, "actual_result": "home_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.6365133308435093, "draw": 0.22387332719378952, "away_win": 0.1396103503608979}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.5952577590942383, "draw": 0.18466602265834808, "away_win": 0.22007620334625244}}, {"date": "2026-06-16", "home_team": "Iraq", "away_team": "Norway", "home_score": 1, "away_score": 4, "actual_result": "away_win", "poisson_pred": "away_win", "poisson_probs": {"home_win": 0.16302598986545258, "draw": 0.23737642652600258, "away_win": 0.5995958057444521}, "xgb_pred": "away_win", "xgb_probs": {"home_win": 0.3684441149234772, "draw": 0.19258615374565125, "away_win": 0.4389697015285492}}, {"date": "2026-06-16", "home_team": "Argentina", "away_team": "Algeria", "home_score": 3, "away_score": 0, "actual_result": "home_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.6915479121856607, "draw": 0.19431987097301714, "away_win": 0.11412214047537791}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.7156943678855896, "draw": 0.19615735113620758, "away_win": 0.08814823627471924}}, {"date": "2026-06-16", "home_team": "Austria", "away_team": "Jordan", "home_score": 3, "away_score": 1, "actual_result": "home_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.77653203591773, "draw": 0.14588164962389308, "away_win": 0.07751961519243145}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.6894007921218872, "draw": 0.08824754506349564, "away_win": 0.22235164046287537}}, {"date": "2026-06-17", "home_team": "Uzbekistan", "away_team": "Colombia", "home_score": 1, "away_score": 3, "actual_result": "away_win", "poisson_pred": "away_win", "poisson_probs": {"home_win": 0.14321126802515627, "draw": 0.23594260007227733, "away_win": 0.6208444412158314}, "xgb_pred": "away_win", "xgb_probs": {"home_win": 0.15293334424495697, "draw": 0.08260422945022583, "away_win": 0.764462411403656}}, {"date": "2026-06-17", "home_team": "England", "away_team": "Croatia", "home_score": 4, "away_score": 2, "actual_result": "home_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.6485003639448992, "draw": 0.2083010097586034, "away_win": 0.14319162438972616}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.796450674533844, "draw": 0.11529827117919922, "away_win": 0.0882510393857956}}, {"date": "2026-06-17", "home_team": "Ghana", "away_team": "Panama", "home_score": 1, "away_score": 0, "actual_result": "home_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.5084539523922482, "draw": 0.25701909935044465, "away_win": 0.2345262549562754}, "xgb_pred": "draw", "xgb_probs": {"home_win": 0.43680426478385925, "draw": 0.4449627697467804, "away_win": 0.11823293566703796}}, {"date": "2026-06-18", "home_team": "Mexico", "away_team": "South Korea", "home_score": 1, "away_score": 0, "actual_result": "home_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.48648768466509273, "draw": 0.2668817566891612, "away_win": 0.2466301761403821}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.5823242664337158, "draw": 0.232860267162323, "away_win": 0.18481548130512238}}, {"date": "2026-06-18", "home_team": "Canada", "away_team": "Qatar", "home_score": 6, "away_score": 0, "actual_result": "home_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.6768932631569562, "draw": 0.1907833164317298, "away_win": 0.13230730674727142}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.8175289630889893, "draw": 0.0920085459947586, "away_win": 0.09046254307031631}}, {"date": "2026-06-19", "home_team": "Scotland", "away_team": "Morocco", "home_score": 0, "away_score": 1, "actual_result": "away_win", "poisson_pred": "away_win", "poisson_probs": {"home_win": 0.24231462953329375, "draw": 0.2938001011441218, "away_win": 0.46388517941587476}, "xgb_pred": "draw", "xgb_probs": {"home_win": 0.27650389075279236, "draw": 0.4902830123901367, "away_win": 0.23321306705474854}}, {"date": "2026-06-19", "home_team": "Brazil", "away_team": "Haiti", "home_score": 3, "away_score": 0, "actual_result": "home_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.9631669615288032, "draw": 0.01970895863185918, "away_win": 0.004998267215073751}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.7458541989326477, "draw": 0.23072777688503265, "away_win": 0.023418042808771133}}, {"date": "2026-06-20", "home_team": "Ecuador", "away_team": "Cura\u00e7ao", "home_score": 0, "away_score": 0, "actual_result": "draw", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.8351316510319343, "draw": 0.12104897151885065, "away_win": 0.04373445401086991}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.7566105127334595, "draw": 0.14346425235271454, "away_win": 0.0999252051115036}}, {"date": "2026-06-20", "home_team": "Germany", "away_team": "Ivory Coast", "home_score": 2, "away_score": 1, "actual_result": "home_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.6561015514151931, "draw": 0.1964961305980993, "away_win": 0.14738805057808485}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.6249531507492065, "draw": 0.186008021235466, "away_win": 0.18903885781764984}}, {"date": "2026-06-20", "home_team": "Tunisia", "away_team": "Japan", "home_score": 0, "away_score": 4, "actual_result": "away_win", "poisson_pred": "away_win", "poisson_probs": {"home_win": 0.32780510550924635, "draw": 0.29659346416815957, "away_win": 0.3756013891747949}, "xgb_pred": "away_win", "xgb_probs": {"home_win": 0.42849868535995483, "draw": 0.12819641828536987, "away_win": 0.44330495595932007}}, {"date": "2026-06-20", "home_team": "Netherlands", "away_team": "Sweden", "home_score": 5, "away_score": 1, "actual_result": "home_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.6671922462154298, "draw": 0.18967939756840005, "away_win": 0.1431082722286619}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.6441815495491028, "draw": 0.27260255813598633, "away_win": 0.08321593701839447}}, {"date": "2026-06-21", "home_team": "Belgium", "away_team": "Iran", "home_score": 0, "away_score": 0, "actual_result": "draw", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.6642504100389273, "draw": 0.20139053517354003, "away_win": 0.134349875308144}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.8277251124382019, "draw": 0.08569350838661194, "away_win": 0.08658144623041153}}, {"date": "2026-06-21", "home_team": "New Zealand", "away_team": "Egypt", "home_score": 1, "away_score": 3, "actual_result": "away_win", "poisson_pred": "away_win", "poisson_probs": {"home_win": 0.1963705703936645, "draw": 0.31712854462824086, "away_win": 0.48650084705627694}, "xgb_pred": "away_win", "xgb_probs": {"home_win": 0.33718937635421753, "draw": 0.3237479627132416, "away_win": 0.33906272053718567}}, {"date": "2026-06-21", "home_team": "Spain", "away_team": "Saudi Arabia", "home_score": 4, "away_score": 0, "actual_result": "home_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.8938047232056195, "draw": 0.08071991071764185, "away_win": 0.02509213076953081}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.690439760684967, "draw": 0.16282276809215546, "away_win": 0.1467375010251999}}, {"date": "2026-06-22", "home_team": "France", "away_team": "Iraq", "home_score": 3, "away_score": 0, "actual_result": "home_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.8656493767983279, "draw": 0.1012577379382756, "away_win": 0.03292973393539829}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.6615110039710999, "draw": 0.22414393723011017, "away_win": 0.11434504389762878}}, {"date": "2026-06-22", "home_team": "Norway", "away_team": "Senegal", "home_score": 3, "away_score": 2, "actual_result": "home_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.4572615344609642, "draw": 0.26999502500775185, "away_win": 0.27274315828557166}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.553375244140625, "draw": 0.1784684807062149, "away_win": 0.2681562602519989}}, {"date": "2026-06-22", "home_team": "Argentina", "away_team": "Austria", "home_score": 2, "away_score": 0, "actual_result": "home_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.6688835299555381, "draw": 0.20679372394736684, "away_win": 0.12431667710186564}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.6536255478858948, "draw": 0.22474057972431183, "away_win": 0.1216338723897934}}, {"date": "2026-06-22", "home_team": "Jordan", "away_team": "Algeria", "home_score": 1, "away_score": 2, "actual_result": "away_win", "poisson_pred": "away_win", "poisson_probs": {"home_win": 0.16826584115943655, "draw": 0.21326442545385463, "away_win": 0.6184629555974868}, "xgb_pred": "away_win", "xgb_probs": {"home_win": 0.1607503592967987, "draw": 0.08406578004360199, "away_win": 0.7551838755607605}}, {"date": "2026-06-23", "home_team": "Portugal", "away_team": "Uzbekistan", "home_score": 5, "away_score": 0, "actual_result": "home_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.8253644565843706, "draw": 0.12275322529280482, "away_win": 0.05177469286700427}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.7249865531921387, "draw": 0.1964278668165207, "away_win": 0.07858551293611526}}, {"date": "2026-06-23", "home_team": "England", "away_team": "Ghana", "home_score": 0, "away_score": 0, "actual_result": "draw", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.8481149123568787, "draw": 0.11218368767045146, "away_win": 0.0395831812543954}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.7483899593353271, "draw": 0.12654681503772736, "away_win": 0.1250632107257843}}, {"date": "2026-06-23", "home_team": "Panama", "away_team": "Croatia", "home_score": 0, "away_score": 1, "actual_result": "away_win", "poisson_pred": "away_win", "poisson_probs": {"home_win": 0.1418830422433111, "draw": 0.1915041208071588, "away_win": 0.666595102914298}, "xgb_pred": "away_win", "xgb_probs": {"home_win": 0.0636725053191185, "draw": 0.20864048600196838, "away_win": 0.7276869416236877}}, {"date": "2026-06-24", "home_team": "South Africa", "away_team": "South Korea", "home_score": 1, "away_score": 0, "actual_result": "home_win", "poisson_pred": "away_win", "poisson_probs": {"home_win": 0.30208716637741695, "draw": 0.30243168338025983, "away_win": 0.3954811154906295}, "xgb_pred": "draw", "xgb_probs": {"home_win": 0.3338415324687958, "draw": 0.40303167700767517, "away_win": 0.26312676072120667}}, {"date": "2026-06-24", "home_team": "Canada", "away_team": "Switzerland", "home_score": 1, "away_score": 2, "actual_result": "away_win", "poisson_pred": "away_win", "poisson_probs": {"home_win": 0.30428387124816353, "draw": 0.2618782158413774, "away_win": 0.433837523316114}, "xgb_pred": "draw", "xgb_probs": {"home_win": 0.23371924459934235, "draw": 0.4161541163921356, "away_win": 0.3501266837120056}}, {"date": "2026-06-24", "home_team": "Scotland", "away_team": "Brazil", "home_score": 0, "away_score": 3, "actual_result": "away_win", "poisson_pred": "away_win", "poisson_probs": {"home_win": 0.11273624523912149, "draw": 0.1886838735092878, "away_win": 0.6985665773590399}, "xgb_pred": "away_win", "xgb_probs": {"home_win": 0.1993892341852188, "draw": 0.14818520843982697, "away_win": 0.6524255871772766}}, {"date": "2026-06-24", "home_team": "Morocco", "away_team": "Haiti", "home_score": 4, "away_score": 2, "actual_result": "home_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.8701271738947741, "draw": 0.09661510317518275, "away_win": 0.03303755961438945}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.6822652816772461, "draw": 0.22463327646255493, "away_win": 0.09310141950845718}}, {"date": "2026-06-25", "home_team": "Paraguay", "away_team": "Australia", "home_score": 0, "away_score": 0, "actual_result": "draw", "poisson_pred": "away_win", "poisson_probs": {"home_win": 0.3439048421055221, "draw": 0.3118629753289676, "away_win": 0.3442321657892323}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.5954030752182007, "draw": 0.16682542860507965, "away_win": 0.23777152597904205}}, {"date": "2026-06-25", "home_team": "Cura\u00e7ao", "away_team": "Ivory Coast", "home_score": 0, "away_score": 2, "actual_result": "away_win", "poisson_pred": "away_win", "poisson_probs": {"home_win": 0.14030795571558688, "draw": 0.22072270586186668, "away_win": 0.6389658050447835}, "xgb_pred": "away_win", "xgb_probs": {"home_win": 0.1334180235862732, "draw": 0.37141984701156616, "away_win": 0.49516206979751587}}, {"date": "2026-06-25", "home_team": "Ecuador", "away_team": "Germany", "home_score": 2, "away_score": 1, "actual_result": "home_win", "poisson_pred": "away_win", "poisson_probs": {"home_win": 0.3574152232857246, "draw": 0.26478556514739765, "away_win": 0.3777989503114093}, "xgb_pred": "draw", "xgb_probs": {"home_win": 0.21252764761447906, "draw": 0.40065625309944153, "away_win": 0.3868160843849182}}, {"date": "2026-06-25", "home_team": "Japan", "away_team": "Sweden", "home_score": 1, "away_score": 1, "actual_result": "draw", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.5360205653500936, "draw": 0.2378750453428277, "away_win": 0.2261022752304459}, "xgb_pred": "draw", "xgb_probs": {"home_win": 0.3401873707771301, "draw": 0.38994696736335754, "away_win": 0.26986563205718994}}, {"date": "2026-06-25", "home_team": "Tunisia", "away_team": "Netherlands", "home_score": 1, "away_score": 3, "actual_result": "away_win", "poisson_pred": "away_win", "poisson_probs": {"home_win": 0.23843673137503138, "draw": 0.270209502377316, "away_win": 0.4913534387335907}, "xgb_pred": "away_win", "xgb_probs": {"home_win": 0.20757080614566803, "draw": 0.17222923040390015, "away_win": 0.6201999187469482}}, {"date": "2026-06-26", "home_team": "New Zealand", "away_team": "Belgium", "home_score": 1, "away_score": 5, "actual_result": "away_win", "poisson_pred": "away_win", "poisson_probs": {"home_win": 0.06459168862352634, "draw": 0.1546192883439418, "away_win": 0.7807609348654284}, "xgb_pred": "away_win", "xgb_probs": {"home_win": 0.16370409727096558, "draw": 0.09336747229099274, "away_win": 0.7429283857345581}}, {"date": "2026-06-26", "home_team": "Egypt", "away_team": "Iran", "home_score": 1, "away_score": 1, "actual_result": "draw", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.35863452367271975, "draw": 0.31189577726103673, "away_win": 0.3294696818673504}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.4889952540397644, "draw": 0.34554511308670044, "away_win": 0.16545958817005157}}, {"date": "2026-06-26", "home_team": "Senegal", "away_team": "Iraq", "home_score": 5, "away_score": 0, "actual_result": "home_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.6661954146954985, "draw": 0.2313727315371227, "away_win": 0.10243037366486785}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.7246367931365967, "draw": 0.17630203068256378, "away_win": 0.09906116873025894}}, {"date": "2026-06-26", "home_team": "Norway", "away_team": "France", "home_score": 1, "away_score": 4, "actual_result": "away_win", "poisson_pred": "away_win", "poisson_probs": {"home_win": 0.2624985944309602, "draw": 0.23952542771055535, "away_win": 0.4979740948263469}, "xgb_pred": "away_win", "xgb_probs": {"home_win": 0.1858244389295578, "draw": 0.1962733268737793, "away_win": 0.6179022192955017}}, {"date": "2026-06-26", "home_team": "Uruguay", "away_team": "Spain", "home_score": 0, "away_score": 1, "actual_result": "away_win", "poisson_pred": "away_win", "poisson_probs": {"home_win": 0.28763510510229834, "draw": 0.2823225854235261, "away_win": 0.43004218520527693}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.38719698786735535, "draw": 0.3224968910217285, "away_win": 0.29030612111091614}}, {"date": "2026-06-27", "home_team": "Algeria", "away_team": "Austria", "home_score": 3, "away_score": 3, "actual_result": "draw", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.43381344270982825, "draw": 0.2521208064653143, "away_win": 0.31406505255212747}, "xgb_pred": "draw", "xgb_probs": {"home_win": 0.2834559381008148, "draw": 0.3876560628414154, "away_win": 0.32888802886009216}}, {"date": "2026-06-27", "home_team": "Jordan", "away_team": "Argentina", "home_score": 1, "away_score": 3, "actual_result": "away_win", "poisson_pred": "away_win", "poisson_probs": {"home_win": 0.05501689764887506, "draw": 0.1346447984796248, "away_win": 0.8102772870201038}, "xgb_pred": "away_win", "xgb_probs": {"home_win": 0.10501816868782043, "draw": 0.09759798645973206, "away_win": 0.7973838448524475}}, {"date": "2026-06-27", "home_team": "Colombia", "away_team": "Portugal", "home_score": 0, "away_score": 0, "actual_result": "draw", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.38351882917106783, "draw": 0.27346482600288674, "away_win": 0.34301618901991277}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.395175576210022, "draw": 0.31582507491111755, "away_win": 0.28899937868118286}}, {"date": "2026-06-27", "home_team": "Panama", "away_team": "England", "home_score": 0, "away_score": 2, "actual_result": "away_win", "poisson_pred": "away_win", "poisson_probs": {"home_win": 0.05587366401841085, "draw": 0.12412306182335982, "away_win": 0.8198862657006685}, "xgb_pred": "away_win", "xgb_probs": {"home_win": 0.08391954749822617, "draw": 0.3608798682689667, "away_win": 0.5552005767822266}}, {"date": "2026-06-27", "home_team": "Croatia", "away_team": "Ghana", "home_score": 2, "away_score": 1, "actual_result": "home_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.7182325797871159, "draw": 0.1796345196174251, "away_win": 0.10211497627495945}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.6685189604759216, "draw": 0.25282320380210876, "away_win": 0.07865779846906662}}, {"date": "2026-06-28", "home_team": "South Africa", "away_team": "Canada", "home_score": 0, "away_score": 1, "actual_result": "away_win", "poisson_pred": "away_win", "poisson_probs": {"home_win": 0.2713554762907705, "draw": 0.30437594580015703, "away_win": 0.42426853728244057}, "xgb_pred": "away_win", "xgb_probs": {"home_win": 0.38318008184432983, "draw": 0.2027832567691803, "away_win": 0.41403669118881226}}, {"date": "2026-06-29", "home_team": "Brazil", "away_team": "Japan", "home_score": 2, "away_score": 1, "actual_result": "home_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.6966872423875429, "draw": 0.18926588670390848, "away_win": 0.11403369789182685}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.5202232599258423, "draw": 0.26585185527801514, "away_win": 0.21392486989498138}}, {"date": "2026-06-29", "home_team": "Germany", "away_team": "Paraguay", "home_score": 1, "away_score": 1, "actual_result": "draw", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.6655486689323854, "draw": 0.1961966057725585, "away_win": 0.13824183876666615}, "xgb_pred": "draw", "xgb_probs": {"home_win": 0.32663455605506897, "draw": 0.3541812300682068, "away_win": 0.31918424367904663}}, {"date": "2026-06-29", "home_team": "Netherlands", "away_team": "Morocco", "home_score": 1, "away_score": 1, "actual_result": "draw", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.48146924382839795, "draw": 0.2801486602769102, "away_win": 0.23838190546167326}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.5983352661132812, "draw": 0.17577876150608063, "away_win": 0.2258860021829605}}, {"date": "2026-06-30", "home_team": "Ivory Coast", "away_team": "Norway", "home_score": 1, "away_score": 2, "actual_result": "away_win", "poisson_pred": "away_win", "poisson_probs": {"home_win": 0.33888619090870264, "draw": 0.27236270826678505, "away_win": 0.38875093155848434}, "xgb_pred": "draw", "xgb_probs": {"home_win": 0.29801738262176514, "draw": 0.40685468912124634, "away_win": 0.2951279282569885}}, {"date": "2026-06-30", "home_team": "France", "away_team": "Sweden", "home_score": 3, "away_score": 0, "actual_result": "home_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.7194903911858815, "draw": 0.17189476931959707, "away_win": 0.10858338322453809}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.7618131041526794, "draw": 0.14859911799430847, "away_win": 0.08958776295185089}}, {"date": "2026-06-30", "home_team": "Mexico", "away_team": "Ecuador", "home_score": 2, "away_score": 0, "actual_result": "home_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.35097293812374775, "draw": 0.3096372430271622, "away_win": 0.3393897998632809}, "xgb_pred": "draw", "xgb_probs": {"home_win": 0.295076847076416, "draw": 0.5949567556381226, "away_win": 0.1099664643406868}}, {"date": "2026-07-01", "home_team": "Belgium", "away_team": "Senegal", "home_score": 3, "away_score": 2, "actual_result": "home_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.621899246024118, "draw": 0.22543399540140074, "away_win": 0.15266368035077407}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.633144736289978, "draw": 0.13466481864452362, "away_win": 0.23219043016433716}}, {"date": "2026-07-02", "home_team": "Spain", "away_team": "Austria", "home_score": 3, "away_score": 0, "actual_result": "home_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.7198008358217926, "draw": 0.1709789916177717, "away_win": 0.1091865808256873}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.7343220710754395, "draw": 0.15505945682525635, "away_win": 0.110618457198143}}, {"date": "2026-07-02", "home_team": "Portugal", "away_team": "Croatia", "home_score": 2, "away_score": 1, "actual_result": "home_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.634018901756444, "draw": 0.20410788612894018, "away_win": 0.16186239416614162}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.6612904071807861, "draw": 0.11374078691005707, "away_win": 0.2249687761068344}}, {"date": "2026-07-02", "home_team": "Switzerland", "away_team": "Algeria", "home_score": 2, "away_score": 0, "actual_result": "home_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.5407710553631546, "draw": 0.2288069443606678, "away_win": 0.23041831981186583}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.47362497448921204, "draw": 0.2112470269203186, "away_win": 0.31512799859046936}}, {"date": "2026-07-03", "home_team": "Australia", "away_team": "Egypt", "home_score": 1, "away_score": 1, "actual_result": "draw", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.46699637395188826, "draw": 0.30042477552569247, "away_win": 0.2325787825861122}, "xgb_pred": "draw", "xgb_probs": {"home_win": 0.1635286808013916, "draw": 0.626605212688446, "away_win": 0.20986613631248474}}, {"date": "2026-07-03", "home_team": "Colombia", "away_team": "Ghana", "home_score": 1, "away_score": 0, "actual_result": "home_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.7814694919053582, "draw": 0.15396652182793727, "away_win": 0.06453496917827686}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.7199445366859436, "draw": 0.16071587800979614, "away_win": 0.11933962255716324}}, {"date": "2026-07-04", "home_team": "Canada", "away_team": "Morocco", "home_score": 0, "away_score": 3, "actual_result": "away_win", "poisson_pred": "away_win", "poisson_probs": {"home_win": 0.2796886550353008, "draw": 0.315838432630835, "away_win": 0.40447289219245064}, "xgb_pred": "away_win", "xgb_probs": {"home_win": 0.21345338225364685, "draw": 0.29329559206962585, "away_win": 0.4932509958744049}}, {"date": "2026-07-04", "home_team": "Paraguay", "away_team": "France", "home_score": 0, "away_score": 1, "actual_result": "away_win", "poisson_pred": "away_win", "poisson_probs": {"home_win": 0.17239690333461033, "draw": 0.24577504121446564, "away_win": 0.5818268486451136}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.4865480363368988, "draw": 0.16679345071315765, "away_win": 0.34665852785110474}}, {"date": "2026-07-05", "home_team": "Brazil", "away_team": "Norway", "home_score": 1, "away_score": 2, "actual_result": "away_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.724065544407487, "draw": 0.17163179789996755, "away_win": 0.104273444666023}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.5318500995635986, "draw": 0.38026270270347595, "away_win": 0.08788717538118362}}, {"date": "2026-07-05", "home_team": "Mexico", "away_team": "England", "home_score": 2, "away_score": 3, "actual_result": "away_win", "poisson_pred": "away_win", "poisson_probs": {"home_win": 0.17838369138767712, "draw": 0.24819884077224225, "away_win": 0.5734163806716264}, "xgb_pred": "away_win", "xgb_probs": {"home_win": 0.1656724512577057, "draw": 0.3909168839454651, "away_win": 0.443410724401474}}, {"date": "2026-07-06", "home_team": "Portugal", "away_team": "Spain", "home_score": 0, "away_score": 1, "actual_result": "away_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.39125712276458885, "draw": 0.2554829924336768, "away_win": 0.3532594010306103}, "xgb_pred": "draw", "xgb_probs": {"home_win": 0.23930884897708893, "draw": 0.47131842374801636, "away_win": 0.2893727719783783}}, {"date": "2026-07-07", "home_team": "Argentina", "away_team": "Egypt", "home_score": 3, "away_score": 2, "actual_result": "home_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.7133842842755881, "draw": 0.20176871376701608, "away_win": 0.08484258581633912}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.6261827945709229, "draw": 0.2536834478378296, "away_win": 0.12013371288776398}}, {"date": "2026-07-07", "home_team": "Switzerland", "away_team": "Colombia", "home_score": 0, "away_score": 0, "actual_result": "draw", "poisson_pred": "away_win", "poisson_probs": {"home_win": 0.3566544677121276, "draw": 0.2695539462511359, "away_win": 0.3737913928094282}, "xgb_pred": "away_win", "xgb_probs": {"home_win": 0.22872978448867798, "draw": 0.2627532184123993, "away_win": 0.5085170269012451}}, {"date": "2026-07-09", "home_team": "France", "away_team": "Morocco", "home_score": 2, "away_score": 0, "actual_result": "home_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.5337250816159204, "draw": 0.2734897576288017, "away_win": 0.19278485339224566}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.7113495469093323, "draw": 0.1174401342868805, "away_win": 0.17121034860610962}}, {"date": "2026-07-10", "home_team": "Spain", "away_team": "Belgium", "home_score": 2, "away_score": 1, "actual_result": "home_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.552064012779566, "draw": 0.22762220526818294, "away_win": 0.22030991089430452}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.6315279006958008, "draw": 0.19186893105506897, "away_win": 0.17660316824913025}}, {"date": "2026-07-11", "home_team": "Norway", "away_team": "England", "home_score": 1, "away_score": 2, "actual_result": "away_win", "poisson_pred": "away_win", "poisson_probs": {"home_win": 0.2286234414448075, "draw": 0.24396870908650317, "away_win": 0.5274063707893718}, "xgb_pred": "draw", "xgb_probs": {"home_win": 0.2336982935667038, "draw": 0.42868494987487793, "away_win": 0.33761680126190186}}, {"date": "2026-07-11", "home_team": "Argentina", "away_team": "Switzerland", "home_score": 3, "away_score": 1, "actual_result": "home_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.6220950071906223, "draw": 0.2226162626254343, "away_win": 0.15528508629274995}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.7140440940856934, "draw": 0.19097474217414856, "away_win": 0.09498117864131927}}, {"date": "2026-07-14", "home_team": "France", "away_team": "Spain", "home_score": 0, "away_score": 2, "actual_result": "away_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.38531791156654427, "draw": 0.2580984500101297, "away_win": 0.35658323435841155}, "xgb_pred": "draw", "xgb_probs": {"home_win": 0.2675316035747528, "draw": 0.43241411447525024, "away_win": 0.30005425214767456}}, {"date": "2026-07-15", "home_team": "England", "away_team": "Argentina", "home_score": 1, "away_score": 2, "actual_result": "away_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.4134566870652764, "draw": 0.29537219780683766, "away_win": 0.291171058323618}, "xgb_pred": "draw", "xgb_probs": {"home_win": 0.2838326692581177, "draw": 0.38054215908050537, "away_win": 0.33562520146369934}}, {"date": "2026-07-18", "home_team": "France", "away_team": "England", "home_score": 4, "away_score": 6, "actual_result": "away_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.3989998913020278, "draw": 0.2732838653024341, "away_win": 0.32771607582908097}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.5014937520027161, "draw": 0.32801538705825806, "away_win": 0.17049090564250946}}, {"date": "2026-07-19", "home_team": "Spain", "away_team": "Argentina", "home_score": 1, "away_score": 0, "actual_result": "home_win", "poisson_pred": "home_win", "poisson_probs": {"home_win": 0.4492320889969247, "draw": 0.27390251122055986, "away_win": 0.27686518091053747}, "xgb_pred": "home_win", "xgb_probs": {"home_win": 0.4266829788684845, "draw": 0.24838010966777802, "away_win": 0.3249368667602539}}]}</script>
+<script>
+(function() {
+  const DATA = JSON.parse(document.getElementById('model-data').textContent);
+  const HENMI = JSON.parse(document.getElementById('henmi-data').textContent);
+  const S = DATA.standardization;
+  const C = DATA.linear_coefs;
+  const NN = DATA.nn_weights;
+  const ROSTER = 26;
+  const SCALE_MIN = -4, SCALE_MAX = 2;
+
+  function std(x, mean, sd) { return (x - mean) / sd; }
+  function unstdY(y) { return y * S.Y_std_dev + S.Y_mean; }
+
+  function features(rp, or_, epl, laliga, bund, seriea, ligue1) {
+    const RP = std(rp, S.RP_mean, S.RP_std_dev);
+    const OR = std(or_, S.OR_mean, S.OR_std_dev);
+    const EPL = std(epl / ROSTER, S.EPL_mean, S.EPL_std_dev);
+    const LaLiga = std(laliga / ROSTER, S.La_Liga_mean, S.La_Liga_std_dev);
+    const Bund = std(bund / ROSTER, S.Bundesliga_mean, S.Bundesliga_std_dev);
+    const SerieA = std(seriea / ROSTER, S.Serie_A_mean, S.Serie_A_std_dev);
+    const Ligue1 = std(ligue1 / ROSTER, S.Ligue_1_mean, S.Ligue_1_std_dev);
+    const t5Raw = (epl + laliga + bund + seriea + ligue1) / ROSTER;
+    const T5 = std(t5Raw, S.t5league_mean, S.t5league_std_dev);
+    return { RP, OR, EPL, LaLiga, Bund, SerieA, Ligue1, T5 };
+  }
+
+  function predictAll(f) {
+    const results = {};
+    results['Ranking Points only'] = unstdY(f.RP * C.RP_only[0] + C.RP_only[1]);
+    results['Ordinal Rank only'] = unstdY(f.OR * C.OR_only[0] + C.OR_only[1]);
+    results['t5league only (aggregate)'] = unstdY(f.T5 * C.t5league_only[0] + C.t5league_only[1]);
+    const ilo = C.individual_leagues_only;
+    results['Individual leagues only'] = unstdY(f.EPL*ilo[0] + f.LaLiga*ilo[1] + f.Bund*ilo[2] + f.SerieA*ilo[3] + f.Ligue1*ilo[4] + ilo[5]);
+    const t5rp = C.t5l_RP;
+    results['RP + t5league (aggregate)'] = unstdY(f.RP*t5rp[0] + f.T5*t5rp[1] + t5rp[2]);
+    const indrp = C.ind_lg_RP;
+    results['RP + individual leagues'] = unstdY(f.RP*indrp[0] + f.EPL*indrp[1] + f.LaLiga*indrp[2] + f.Bund*indrp[3] + f.SerieA*indrp[4] + f.Ligue1*indrp[5] + indrp[6]);
+    const t5or = C.t5l_OR;
+    results['Ordinal Rank + t5league (aggregate)'] = unstdY(f.OR*t5or[0] + f.T5*t5or[1] + t5or[2]);
+    const indor = C.ind_lg_OR;
+    results['Ordinal Rank + individual leagues'] = unstdY(f.OR*indor[0] + f.EPL*indor[1] + f.LaLiga*indor[2] + f.Bund*indor[3] + f.SerieA*indor[4] + f.Ligue1*indor[5] + indor[6]);
+    const x = [f.OR, f.EPL, f.LaLiga, f.Bund, f.SerieA, f.Ligue1];
+    const hidden = new Array(8).fill(0);
+    for (let j = 0; j < 8; j++) {
+      let sum = NN.b1[j];
+      for (let i = 0; i < 6; i++) sum += x[i] * NN.W1[i][j];
+      hidden[j] = Math.max(0, sum);
+    }
+    let out = NN.b2[0];
+    for (let j = 0; j < 8; j++) out += hidden[j] * NN.W2[j][0];
+    results['Neural network (Ordinal Rank + individual leagues)'] = unstdY(out);
+    return results;
+  }
+
+  const MODEL_ORDER = [
+    'Ordinal Rank + t5league (aggregate)',
+    'Ordinal Rank + individual leagues',
+    'Ordinal Rank only',
+    't5league only (aggregate)',
+    'RP + t5league (aggregate)',
+    'RP + individual leagues',
+    'Individual leagues only',
+    'Neural network (Ordinal Rank + individual leagues)',
+    'Ranking Points only',
+  ];
+
+  function pct(v) { return ((v - SCALE_MIN) / (SCALE_MAX - SCALE_MIN)) * 100; }
+  function clampScale(v) { return Math.max(SCALE_MIN, Math.min(SCALE_MAX, v)); }
+
+  let pinnedModel = null; // shared pin state across both bar charts
+
+  function renderBars(container, predictions, actual, guess) {
+    container.innerHTML = '';
+    const scale = document.createElement('div');
+    scale.className = 'divbar-scale';
+    [SCALE_MIN, 0, SCALE_MAX].forEach(t => {
+      const tick = document.createElement('div');
+      tick.className = 'tick';
+      tick.style.left = pct(t) + '%';
+      tick.textContent = t > 0 ? '+' + t : t;
+      scale.appendChild(tick);
+    });
+    container.appendChild(scale);
+
+    let best = null, worst = null;
+    if (actual !== null && actual !== undefined) {
+      let bestErr = Infinity, worstErr = -Infinity;
+      MODEL_ORDER.forEach(name => {
+        const err = Math.abs(predictions[name] - actual);
+        if (err < bestErr) { bestErr = err; best = name; }
+        if (err > worstErr) { worstErr = err; worst = name; }
+      });
+    }
+
+    MODEL_ORDER.forEach(name => {
+      const val = predictions[name];
+      const row = document.createElement('div');
+      const classes = ['divbar-row'];
+      if (name === best) classes.push('best');
+      if (name === worst) classes.push('worst');
+      if (pinnedModel && pinnedModel === name) classes.push('pinned');
+      if (pinnedModel && pinnedModel !== name) classes.push('dimmed');
+      row.className = classes.join(' ');
+      row.dataset.model = name;
+      const zeroPct = pct(0);
+      const valPct = pct(clampScale(val));
+      const left = Math.min(zeroPct, valPct);
+      const width = Math.abs(valPct - zeroPct);
+      let marks = '';
+      if (actual !== null && actual !== undefined) {
+        marks += `<div class="actual-marker" style="left:${pct(clampScale(actual))}%"></div>`;
+      }
+      if (guess !== null && guess !== undefined) {
+        marks += `<div class="guess-marker" style="left:${pct(clampScale(guess))}%"></div>`;
+      }
+      row.innerHTML = `
+        <div class="name">${name}</div>
+        <div class="divbar-track">
+          <div class="zero" style="left:${zeroPct}%"></div>
+          <div class="divbar-fill${name === worst && actual !== null && actual !== undefined ? ' critical-fill' : ''}" style="left:${left}%; width:${width}%"></div>
+          ${marks}
+        </div>
+        <div class="val">${val >= 0 ? '+' : ''}${val.toFixed(2)}</div>
+      `;
+      row.addEventListener('click', () => {
+        pinnedModel = (pinnedModel === name) ? null : name;
+        // re-render whichever chart is active by re-invoking last render fn
+        if (typeof window.__rerenderActive === 'function') window.__rerenderActive();
+      });
+      container.appendChild(row);
+    });
+  }
+
+  // ---------------- Real-team tab ----------------
+  const teamSelect = document.getElementById('team-select');
+  const teams = DATA.teams_2026.slice().sort((a, b) => a.team.localeCompare(b.team));
+  teams.forEach(t => {
+    const opt = document.createElement('option');
+    opt.value = t.team;
+    opt.textContent = t.team;
+    teamSelect.appendChild(opt);
+  });
+
+  let guessLocked = false;
+  let guessValue = 0;
+
+  function currentTeam() {
+    return teams.find(t => t.team === teamSelect.value) || teams[0];
+  }
+
+  function teamPredictions(t) {
+    const f = features(t.fifa_ranking_points, t.fifa_rank, t.top5_epl_players, t.top5_laliga_players, t.top5_bundesliga_players, t.top5_seriea_players, t.top5_ligue1_players);
+    return predictAll(f);
+  }
+
+  let realRevealed = false;
+
+  function renderRealTeam() {
+    const t = currentTeam();
+    const preds = teamPredictions(t);
+    renderBars(document.getElementById('real-bars'), preds, realRevealed ? t.mean_scoring_margin : null, guessLocked ? guessValue : null);
+  }
+  window.__rerenderRealTab = renderRealTeam;
+
+  function resetRealTeam() {
+    realRevealed = false;
+    guessLocked = false;
+    guessValue = 0;
+    pinnedModel = null;
+    document.getElementById('guess-slider').value = 0;
+    document.getElementById('guess-slider').disabled = false;
+    document.getElementById('guess-val').textContent = '0.00';
+    document.getElementById('lock-guess-btn').textContent = 'Lock in guess';
+    document.getElementById('lock-guess-btn').disabled = false;
+    document.getElementById('reveal-box').classList.remove('shown');
+    document.getElementById('reveal-btn').disabled = false;
+    document.getElementById('reveal-btn').textContent = 'Reveal actual result';
+
+    const t = currentTeam();
+    document.getElementById('team-meta').innerHTML = `
+      <span><b>FIFA rank</b> #${t.fifa_rank}</span>
+      <span><b>FIFA points</b> ${t.fifa_ranking_points.toFixed(1)}</span>
+      <span><b>Top-5-league roster</b> ${t.t5league_players} / 26 players
+        (EPL ${t.top5_epl_players} &middot; La Liga ${t.top5_laliga_players} &middot; Bundesliga ${t.top5_bundesliga_players} &middot; Ligue 1 ${t.top5_ligue1_players} &middot; Serie A ${t.top5_seriea_players})</span>
+    `;
+    renderRealTeam();
+  }
+
+  document.getElementById('guess-slider').addEventListener('input', function() {
+    document.getElementById('guess-val').textContent = parseFloat(this.value).toFixed(2);
+  });
+  document.getElementById('lock-guess-btn').addEventListener('click', function() {
+    guessValue = parseFloat(document.getElementById('guess-slider').value);
+    guessLocked = true;
+    document.getElementById('guess-slider').disabled = true;
+    this.textContent = 'Guess locked';
+    this.disabled = true;
+    renderRealTeam();
+  });
+
+  document.getElementById('reveal-btn').addEventListener('click', function() {
+    const t = currentTeam();
+    realRevealed = true;
+    const preds = teamPredictions(t);
+    window.__rerenderActive = renderRealTeam;
+    renderRealTeam();
+    let bestName = null, bestErr = Infinity;
+    MODEL_ORDER.forEach(name => {
+      const err = Math.abs(preds[name] - t.mean_scoring_margin);
+      if (err < bestErr) { bestErr = err; bestName = name; }
+    });
+    const box = document.getElementById('reveal-box');
+    let guessLine = '';
+    if (guessLocked) {
+      const guessErr = Math.abs(guessValue - t.mean_scoring_margin);
+      const beatenModels = MODEL_ORDER.filter(name => Math.abs(preds[name] - t.mean_scoring_margin) > guessErr).length;
+      guessLine = `<br>Your guess: ${guessValue >= 0 ? '+' : ''}${guessValue.toFixed(2)} (off by ${guessErr.toFixed(2)}) &mdash; beat ${beatenModels} of ${MODEL_ORDER.length} models.`;
+    }
+    box.innerHTML = `<b>${t.team}'s real 2026 scoring margin: ${t.mean_scoring_margin >= 0 ? '+' : ''}${t.mean_scoring_margin.toFixed(3)} goals/game.</b>
+      Closest model: <b>${bestName}</b> (off by ${bestErr.toFixed(2)}).${guessLine}`;
+    box.classList.add('shown');
+    this.disabled = true;
+    this.textContent = 'Revealed';
+  });
+
+  teamSelect.addEventListener('change', () => { window.__rerenderActive = renderRealTeam; resetRealTeam(); });
+  document.getElementById('shuffle-btn').addEventListener('click', function() {
+    teamSelect.selectedIndex = Math.floor(Math.random() * teams.length);
+    window.__rerenderActive = renderRealTeam;
+    resetRealTeam();
+  });
+
+  window.__rerenderActive = renderRealTeam;
+  resetRealTeam();
+
+  // ---------------- Build-your-own tab ----------------
+  const LEAGUES = [
+    { key: 'epl', label: 'English Premier League' },
+    { key: 'laliga', label: 'La Liga' },
+    { key: 'bundesliga', label: 'Bundesliga' },
+    { key: 'ligue1', label: 'Ligue 1' },
+    { key: 'seriea', label: 'Serie A' },
+  ];
+  const leagueGrid = document.getElementById('league-sliders');
+  const defaults = { epl: 6, laliga: 4, bundesliga: 4, ligue1: 3, seriea: 3 };
+  LEAGUES.forEach(l => {
+    const field = document.createElement('div');
+    field.className = 'slider-field';
+    field.innerHTML = `
+      <label>${l.label} <span class="v" id="val-${l.key}">${defaults[l.key]}</span></label>
+      <input type="range" id="slider-${l.key}" min="0" max="26" step="1" value="${defaults[l.key]}">
+    `;
+    leagueGrid.appendChild(field);
+  });
+
+  function renderBuild() {
+    const rp = parseInt(document.getElementById('rp-slider').value, 10);
+    const or_ = parseInt(document.getElementById('or-slider').value, 10);
+    document.getElementById('rp-val').textContent = rp;
+    document.getElementById('or-val').textContent = or_;
+    const counts = {};
+    let sum = 0;
+    LEAGUES.forEach(l => {
+      const v = parseInt(document.getElementById('slider-' + l.key).value, 10);
+      document.getElementById('val-' + l.key).textContent = v;
+      counts[l.key] = v;
+      sum += v;
+    });
+    document.getElementById('t5-total').innerHTML = `Top-5-league roster share: <b>${sum} / 26 players (${(sum/26*100).toFixed(0)}%)</b>` + (sum > 26 ? ' &mdash; more than a full 26-man squad; real rosters can\'t exceed this.' : '');
+    const f = features(rp, or_, counts.epl, counts.laliga, counts.bundesliga, counts.seriea, counts.ligue1);
+    const preds = predictAll(f);
+    renderBars(document.getElementById('build-bars'), preds, null, null);
+  }
+  window.__rerenderBuildTab = renderBuild;
+
+  document.getElementById('rp-slider').addEventListener('input', renderBuild);
+  document.getElementById('or-slider').addEventListener('input', renderBuild);
+  LEAGUES.forEach(l => document.getElementById('slider-' + l.key).addEventListener('input', renderBuild));
+
+  // ---------------- Leaderboard tab ----------------
+  const lbModelSelect = document.getElementById('lb-model-select');
+  MODEL_ORDER.forEach(name => {
+    const opt = document.createElement('option');
+    opt.value = name;
+    opt.textContent = name;
+    lbModelSelect.appendChild(opt);
+  });
+  lbModelSelect.value = 'Ordinal Rank + t5league (aggregate)';
+
+  let lbSortKey = 'error';
+  let lbSortDir = -1; // -1 desc, 1 asc
+
+  function buildLeaderboardRows() {
+    const modelName = lbModelSelect.value;
+    return teams.map(t => {
+      const preds = teamPredictions(t);
+      const predicted = preds[modelName];
+      return {
+        team: t.team,
+        actual: t.mean_scoring_margin,
+        predicted: predicted,
+        error: Math.abs(predicted - t.mean_scoring_margin),
+      };
+    });
+  }
+
+  function renderLeaderboard() {
+    let rows = buildLeaderboardRows();
+    rows.sort((a, b) => {
+      if (lbSortKey === 'team') return a.team.localeCompare(b.team) * lbSortDir;
+      return (a[lbSortKey] - b[lbSortKey]) * lbSortDir;
+    });
+    const tbody = document.getElementById('lb-body');
+    tbody.innerHTML = rows.map(r => `
+      <tr>
+        <td>${r.team}</td>
+        <td class="num">${r.actual >= 0 ? '+' : ''}${r.actual.toFixed(2)}</td>
+        <td class="num">${r.predicted >= 0 ? '+' : ''}${r.predicted.toFixed(2)}</td>
+        <td class="num">${r.error.toFixed(2)}</td>
+      </tr>
+    `).join('');
+    document.querySelectorAll('table.lb th').forEach(th => {
+      const arrow = th.querySelector('.arrow');
+      if (!arrow) return;
+      arrow.textContent = th.dataset.sort === lbSortKey ? (lbSortDir === 1 ? '↑' : '↓') : '';
+    });
+  }
+
+  document.querySelectorAll('table.lb th[data-sort]').forEach(th => {
+    th.addEventListener('click', () => {
+      const key = th.dataset.sort;
+      if (lbSortKey === key) { lbSortDir *= -1; } else { lbSortKey = key; lbSortDir = key === 'team' ? 1 : -1; }
+      renderLeaderboard();
+    });
+  });
+  lbModelSelect.addEventListener('change', renderLeaderboard);
+
+  // ---------------- Match tab ----------------
+  const matchSelect = document.getElementById('match-select');
+  const matches = HENMI.matches;
+  matches.forEach((m, i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = `${m.home_team} vs ${m.away_team} (${m.date})`;
+    matchSelect.appendChild(opt);
+  });
+
+  const OUTCOME_LABEL = { home_win: 'Home win', draw: 'Draw', away_win: 'Away win' };
+  let matchRevealed = false;
+  let guessOutcome = null;
+
+  function currentMatch() {
+    return matches[parseInt(matchSelect.value || 0, 10)];
+  }
+
+  function renderProbBars(container, probs, predictedKey, actualKey) {
+    container.innerHTML = '';
+    ['home_win', 'draw', 'away_win'].forEach(key => {
+      const row = document.createElement('div');
+      const classes = ['prob-row'];
+      if (key === predictedKey) classes.push('predicted');
+      if (actualKey && key === actualKey) classes.push('actual-outcome');
+      row.className = classes.join(' ');
+      const p = probs[key] * 100;
+      row.innerHTML = `
+        <div class="name">${OUTCOME_LABEL[key]}</div>
+        <div class="prob-track"><div class="prob-fill" style="width:${p}%"></div></div>
+        <div class="pval">${p.toFixed(0)}%</div>
+      `;
+      container.appendChild(row);
+    });
+  }
+
+  function resetMatch() {
+    matchRevealed = false;
+    guessOutcome = null;
+    document.querySelectorAll('.guess-outcome-btn').forEach(b => b.classList.remove('selected'));
+    document.getElementById('match-reveal-box').classList.remove('shown');
+    document.getElementById('match-reveal-btn').disabled = false;
+    document.getElementById('match-reveal-btn').textContent = 'Reveal actual result';
+
+    const m = currentMatch();
+    document.getElementById('match-teams').innerHTML = `${m.home_team} <span class="vs">home</span> &nbsp;vs&nbsp; ${m.away_team} <span class="vs">away</span> &middot; ${m.date}`;
+
+    renderProbBars(document.getElementById('poisson-bars'), m.poisson_probs, m.poisson_pred, null);
+    renderProbBars(document.getElementById('xgb-bars'), m.xgb_probs, m.xgb_pred, null);
+  }
+
+  document.querySelectorAll('.guess-outcome-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      if (matchRevealed) return;
+      document.querySelectorAll('.guess-outcome-btn').forEach(b => b.classList.remove('selected'));
+      this.classList.add('selected');
+      guessOutcome = this.dataset.outcome;
+    });
+  });
+
+  document.getElementById('match-reveal-btn').addEventListener('click', function() {
+    const m = currentMatch();
+    matchRevealed = true;
+    renderProbBars(document.getElementById('poisson-bars'), m.poisson_probs, m.poisson_pred, m.actual_result);
+    renderProbBars(document.getElementById('xgb-bars'), m.xgb_probs, m.xgb_pred, m.actual_result);
+
+    let guessLine = '';
+    if (guessOutcome) {
+      const correct = guessOutcome === m.actual_result;
+      guessLine = `<br>Your guess (${OUTCOME_LABEL[guessOutcome]}): <b>${correct ? 'correct!' : 'incorrect'}</b>`;
+    }
+    const box = document.getElementById('match-reveal-box');
+    box.innerHTML = `<b>Actual result: ${m.home_team} ${m.home_score}&ndash;${m.away_score} ${m.away_team} (${OUTCOME_LABEL[m.actual_result]}).</b>
+      Poisson predicted <b>${OUTCOME_LABEL[m.poisson_pred]}</b> (${m.poisson_pred === m.actual_result ? 'correct' : 'incorrect'}).
+      XGBoost predicted <b>${OUTCOME_LABEL[m.xgb_pred]}</b> (${m.xgb_pred === m.actual_result ? 'correct' : 'incorrect'}).${guessLine}`;
+    box.classList.add('shown');
+    this.disabled = true;
+    this.textContent = 'Revealed';
+  });
+
+  matchSelect.addEventListener('change', resetMatch);
+  document.getElementById('match-shuffle-btn').addEventListener('click', function() {
+    matchSelect.selectedIndex = Math.floor(Math.random() * matches.length);
+    resetMatch();
+  });
+  resetMatch();
+
+  // ---------------- Tabs ----------------
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      this.classList.add('active');
+      const tab = this.dataset.tab;
+      document.getElementById('tab-' + tab).classList.add('active');
+      pinnedModel = null;
+      if (tab === 'real') { window.__rerenderActive = renderRealTeam; renderRealTeam(); }
+      if (tab === 'build') { window.__rerenderActive = renderBuild; renderBuild(); }
+      if (tab === 'leaderboard') { renderLeaderboard(); }
+    });
+  });
+
+  renderBuild();
+  renderLeaderboard();
+})();
+</script>

@@ -1,0 +1,49 @@
+file: wc_2022.csv
+downloaded by Colby from <https://www.kaggle.com/datasets/die9origephit/fifa-world-cup-2022-complete-dataset/data> on 6/24/26
+
+files: fifa_ranking-2023-07-20.csv, fifa_ranking-2024-04-04.csv, fifa_ranking-2024-06-20.csv
+downloaded by Colby from <https://www.kaggle.com/datasets/cashncarry/fifaworldranking/data> on 6/27/26
+
+file: wc_2018.csv
+downloaded by Colby from <https://gitlab.com/djh_or/2018-world-cup-stats/blob/master/world_cup_2018_stats.csv> on 6/28/26.
+
+data: World Cup 2022 player data by league sourced by Colby from fbref.com on 7/1/26
+<https://fbref.com/en/comps/1/2022/leagues/2022-World-Cup-Players-By-League>
+
+data: World Cup 2010 and 2014 match results for Y matrix construction sourced by Colby from fbref.com on 7/18/26
+<https://fbref.com/en/comps/1/2014/2014-World-Cup-Stats> etc
+
+data: World Cup 2010, 2014, and 2018 roster composition data sourced by Colby from fbref.com on 7/19-7/22/26
+
+--- Additions below made while building this folder's (v2) out-of-sample 2026 evaluation ---
+
+data: Official FIFA/Coca-Cola Men's World Ranking dated 11 June 2026 (the pre-tournament
+release), used for both fifa_rank (ordinal) and fifa_ranking_points in wc_2026_x_matrix.csv
+and wc_2026_model_input.csv. Retrieved by Claude (Mohammed's assistant) via the Date filter
+on <https://inside.fifa.com/fifa-world-ranking/men>. Same data originally sourced during the
+first (superseded) evaluation round in Mohammed_2026_Evaluation_Data_DRAFT, reused here since
+it's real-world fact, not derived from any discarded code.
+
+note: wc_2026_x_matrix.csv, wc_2026_model_input.csv, and wc_2026_y_vector.csv (real
+2026 World Cup team results and roster composition) predate this citations addition --
+their FBref source notes are recorded inline in each file's own fifa_ranking_source_note /
+t5league_source_note columns rather than here.
+
+note: this folder (Mohammed_2026_Evaluation_v2) supersedes the earlier
+Mohammed_2026_Evaluation_Data_DRAFT round, which was built against an older version of
+Colby's modeling notebook (before he added Ordinal Rank as a feature). See this folder's
+README.md for what changed and why.
+
+attempted, not obtained: Nate Silver's "Pele" system per-team 2026 World Cup projections
+(natesilver.net / Silver Bulletin) -- the numeric ratings/projections are behind a paid
+Substack subscription, so no data from that source was used in this project. See the
+"Attempting the proposal's actual benchmark" section in
+ranking_points_and_t5league_modeling_EVAL_COPY.ipynb for details.
+
+note: MODEL_DEMO.html's "Predict a match" tab reproduces Henmi's Poisson and XGBoost
+match-outcome models (Henmi_Player_Stats_XGBoost/PlayerStat_XG.ipynb) -- same architecture,
+hyperparameters, and train/test split as his notebook, not modified. Reproduced starting
+from his own already-saved final_match_feature_table.csv (his notebook's raw-data steps
+need a live API key and a hardcoded local path neither of which were available here).
+Verified to reproduce his exact reported accuracy (Poisson 68.7%, XGBoost 63.9% on the
+same 83-match fair-comparison subset) before any numbers were embedded in the demo.

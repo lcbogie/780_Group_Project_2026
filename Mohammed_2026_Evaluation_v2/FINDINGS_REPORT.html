@@ -1,0 +1,612 @@
+<style>
+  .doc {
+    --bg:            #eff2ed;
+    --surface:       #fbfbf8;
+    --surface-2:     #f3f5f0;
+    --ink:           #14201a;
+    --ink-2:         #4b584f;
+    --ink-muted:     #808c82;
+    --accent:        #1e6b45;
+    --accent-strong: #123d28;
+    --accent-wash:   rgba(30,107,69,0.10);
+    --accent2:       #c97a2b;
+    --accent2-wash:  rgba(201,122,43,0.12);
+    --line:          rgba(20,32,26,0.12);
+    --good:          #0ca30c;
+    --critical:      #d03b3b;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .doc {
+      --bg:            #0e1712;
+      --surface:       #16221b;
+      --surface-2:     #121c16;
+      --ink:           #e7ece7;
+      --ink-2:         #b7c4bb;
+      --ink-muted:     #8b9990;
+      --accent:        #4fae7c;
+      --accent-strong: #6fcb99;
+      --accent-wash:   rgba(79,174,124,0.14);
+      --accent2:       #e0a354;
+      --accent2-wash:  rgba(224,163,84,0.14);
+      --line:          rgba(231,236,231,0.16);
+      --good:          #0ca30c;
+      --critical:      #e66767;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] .doc {
+    --bg:            #0e1712;
+    --surface:       #16221b;
+    --surface-2:     #121c16;
+    --ink:           #e7ece7;
+    --ink-2:         #b7c4bb;
+    --ink-muted:     #8b9990;
+    --accent:        #4fae7c;
+    --accent-strong: #6fcb99;
+    --accent-wash:   rgba(79,174,124,0.14);
+    --accent2:       #e0a354;
+    --accent2-wash:  rgba(224,163,84,0.14);
+    --line:          rgba(231,236,231,0.16);
+    --good:          #0ca30c;
+    --critical:      #e66767;
+    color-scheme: dark;
+  }
+  :root[data-theme="light"] .doc {
+    --bg: #eff2ed; --surface:#fbfbf8; --surface-2:#f3f5f0; --ink:#14201a; --ink-2:#4b584f;
+    --ink-muted:#808c82; --accent:#1e6b45; --accent-strong:#123d28; --accent-wash:rgba(30,107,69,0.10);
+    --accent2:#c97a2b; --accent2-wash:rgba(201,122,43,0.12); --line:rgba(20,32,26,0.12);
+    --good:#0ca30c; --critical:#d03b3b; color-scheme: light;
+  }
+
+  .doc {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.5;
+    padding: 0 0 6rem;
+  }
+  .doc * { box-sizing: border-box; }
+  .doc h1, .doc h2, .doc h3 {
+    font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+    color: var(--accent-strong);
+    text-wrap: balance;
+    line-height: 1.15;
+    margin: 0;
+  }
+  .doc .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+  .doc a { color: var(--accent); }
+  .doc .wrap { max-width: 940px; margin: 0 auto; padding: 0 1.5rem; }
+
+  .doc .masthead { background: linear-gradient(180deg, var(--accent-strong), var(--accent) 130%); color: #f3f5ef; padding: 3.5rem 0 2.75rem; }
+  .doc .masthead h1 { color: #ffffff; font-size: clamp(1.9rem, 4.2vw, 2.75rem); max-width: 15ch; }
+  .doc .masthead .kicker { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.72rem; color: #cfe6d8; margin: 0 0 0.9rem; }
+  .doc .masthead .dek { max-width: 62ch; font-size: 1.05rem; color: #e3efe8; margin-top: 0.9rem; }
+  .doc .masthead .meta { display: flex; flex-wrap: wrap; gap: 0.4rem 1.6rem; margin-top: 1.8rem; font-size: 0.85rem; color: #cfe6d8; border-top: 1px solid rgba(255,255,255,0.22); padding-top: 1rem; }
+  .doc .masthead .meta b { color: #fff; font-weight: 600; }
+
+  .doc section { padding: 3rem 0; }
+  .doc section + section { border-top: 1px solid var(--line); }
+  .doc .eyebrow { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.72rem; color: var(--accent); margin: 0 0 0.6rem; }
+  .doc section > h2 { font-size: 1.6rem; margin-bottom: 1.1rem; }
+  .doc p { color: var(--ink-2); max-width: 70ch; }
+  .doc .lede { font-size: 1.08rem; color: var(--ink); }
+
+  .doc .thesis-box { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: 4px; padding: 1.4rem 1.6rem; margin-top: 1.2rem; }
+  .doc .thesis-box p { color: var(--ink); max-width: none; margin: 0; }
+  .doc .thesis-box p + p { margin-top: 0.6rem; }
+
+  .doc .revision-box { background: var(--accent2-wash); border: 1px solid var(--line); border-left: 4px solid var(--accent2); border-radius: 4px; padding: 1.2rem 1.5rem; margin-top: 1.5rem; }
+  .doc .revision-box p { color: var(--ink); max-width: none; margin: 0; }
+  .doc .revision-box p + p { margin-top: 0.5rem; }
+  .doc .revision-box .label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent2); font-weight: 700; margin-bottom: 0.5rem; }
+
+  .doc .pipeline-scroll { overflow-x: auto; margin: 0 -1.5rem; padding: 0 1.5rem; }
+  .doc .pipeline { min-width: 760px; display: flex; flex-direction: column; gap: 0.9rem; }
+  .doc .pl-row { display: grid; grid-template-columns: 150px 1fr; gap: 1rem; align-items: stretch; }
+  .doc .pl-tag { display: flex; align-items: center; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-muted); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+  .doc .pl-stages { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; align-items: stretch; }
+  .doc .pl-stage { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 0.85rem 1rem; position: relative; display: flex; flex-direction: column; gap: 0.3rem; }
+  .doc .pl-stage:not(:last-child) { margin-right: 1.4rem; }
+  .doc .pl-stage:not(:last-child)::after { content: "→"; position: absolute; right: -1.35rem; top: 50%; transform: translateY(-50%); color: var(--ink-muted); font-size: 1.1rem; }
+  .doc .pl-stage .h { font-weight: 600; font-size: 0.86rem; color: var(--ink); }
+  .doc .pl-stage .d { font-size: 0.78rem; color: var(--ink-2); }
+  .doc .pl-stage.data { border-top: 3px solid var(--accent2); }
+  .doc .pl-stage.code { border-top: 3px solid var(--accent); }
+  .doc .pl-stage.out  { border-top: 3px solid var(--accent-strong); }
+  .doc .pl-shared { background: var(--surface-2); border: 1px dashed var(--line); border-radius: 6px; padding: 0.9rem 1.1rem; font-size: 0.82rem; color: var(--ink-2); }
+  .doc .pl-shared b { color: var(--ink); }
+  .doc .pl-legend { display: flex; gap: 1.4rem; flex-wrap: wrap; font-size: 0.76rem; color: var(--ink-muted); margin-top: 0.9rem; }
+  .doc .pl-legend span { display: inline-flex; align-items: center; gap: 0.4rem; }
+  .doc .pl-legend i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+
+  /* Henmi pipeline documentation diagram */
+  .doc .hpipe-scroll { overflow-x: auto; margin: 1.2rem -1.5rem 0; padding: 0.4rem 1.5rem 1rem; }
+  .doc .hpipe { display: flex; align-items: stretch; gap: 0; min-width: 1400px; }
+  .doc .hpipe-col { display: flex; flex-direction: column; gap: 0.55rem; width: 148px; flex-shrink: 0; }
+  .doc .hpipe-col.single { justify-content: center; }
+  .doc .hpipe-head {
+    display: flex; flex-direction: column; gap: 0.15rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-muted);
+    margin-bottom: 0.3rem; min-height: 2.4em;
+  }
+  .doc .hpipe-head span { font-size: 0.66rem; color: var(--accent-strong); letter-spacing: 0.02em; text-transform: none; font-weight: 600; }
+  .doc .hpipe-arrow { display: flex; align-items: center; justify-content: center; width: 28px; flex-shrink: 0; color: var(--ink-muted); font-size: 1rem; padding-top: 2.6em; }
+  .doc .hpipe-card {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 6px;
+    padding: 0.6rem 0.7rem; font-size: 0.72rem; flex: 1;
+  }
+  .doc .hpipe-card.tall { display: flex; flex-direction: column; justify-content: center; flex: 1; }
+  .doc .hpipe-card.data { border-top: 3px solid var(--accent2); }
+  .doc .hpipe-card.proc { border-top: 3px solid var(--accent); }
+  .doc .hpipe-card.result { border-top: 3px solid var(--accent-strong); }
+  .doc .hpipe-card.result.good { background: var(--accent-wash); }
+  .doc .hpipe-card .t { font-weight: 700; color: var(--ink); margin-bottom: 0.25rem; font-size: 0.74rem; }
+  .doc .hpipe-card .d { color: var(--ink-2); line-height: 1.45; }
+
+  .doc .card { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 1.6rem 1.8rem; margin-top: 1.4rem; }
+  .doc .card h3 { font-size: 1.18rem; margin-bottom: 0.2rem; }
+  .doc .card .file { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.78rem; color: var(--accent); word-break: break-all; }
+  .doc .card .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem 1.6rem; margin-top: 1.1rem; }
+  @media (max-width: 640px) { .doc .card .grid { grid-template-columns: 1fr; } }
+  .doc .card .field label { display: block; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.09em; color: var(--ink-muted); margin-bottom: 0.35rem; }
+  .doc .card .field div, .doc .card .field ul { font-size: 0.9rem; color: var(--ink-2); margin: 0; padding: 0; }
+  .doc .card .field ul { padding-left: 1.1rem; }
+  .doc .card .field li { margin-bottom: 0.25rem; }
+  .doc .card .result { margin-top: 1.2rem; padding: 0.9rem 1.1rem; background: var(--accent-wash); border-radius: 6px; font-size: 0.92rem; color: var(--ink); }
+  .doc .card .result b { color: var(--accent-strong); }
+
+  .doc .table-scroll { overflow-x: auto; }
+  .doc table { border-collapse: collapse; width: 100%; font-size: 0.86rem; margin-top: 0.8rem; min-width: 480px; }
+  .doc th, .doc td { text-align: left; padding: 0.55rem 0.8rem; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  .doc th { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-muted); font-weight: 600; }
+  .doc td.num, .doc th.num { font-variant-numeric: tabular-nums; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; text-align: right; }
+  .doc tr.best td { color: var(--ink); font-weight: 600; }
+  .doc .tag { display: inline-block; font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.06em; padding: 0.12rem 0.45rem; border-radius: 3px; margin-left: 0.5rem; font-weight: 600; }
+  .doc .tag.good { background: color-mix(in srgb, var(--good) 16%, transparent); color: var(--good); }
+  .doc .tag.critical { background: color-mix(in srgb, var(--critical) 14%, transparent); color: var(--critical); }
+
+  .doc .barchart { margin-top: 1.2rem; display: flex; flex-direction: column; gap: 0.55rem; }
+  .doc .bar-row { display: grid; grid-template-columns: 210px 1fr 64px; align-items: center; gap: 0.7rem; }
+  .doc .bar-row .name { font-size: 0.8rem; color: var(--ink); text-align: right; }
+  .doc .bar-track { background: var(--surface-2); border-radius: 3px; height: 14px; position: relative; }
+  .doc .bar-fill { height: 14px; border-radius: 3px 4px 4px 3px; background: var(--accent); position: relative; }
+  .doc .bar-fill.amber { background: var(--accent2); }
+  .doc .bar-fill.critical-fill { background: var(--critical); }
+  .doc .bar-row .val { font-size: 0.78rem; color: var(--ink-2); font-variant-numeric: tabular-nums; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+  .doc .chart-caption { font-size: 0.76rem; color: var(--ink-muted); margin-top: 0.5rem; }
+  .doc .chart-legend { display: flex; gap: 1.2rem; font-size: 0.76rem; color: var(--ink-2); margin-top: 0.9rem; flex-wrap: wrap; }
+  .doc .chart-legend span { display: inline-flex; align-items: center; gap: 0.4rem; }
+  .doc .chart-legend i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+
+  .doc .findings { display: flex; flex-direction: column; gap: 1rem; margin-top: 1.2rem; }
+  .doc .finding { display: grid; grid-template-columns: 2.2rem 1fr; gap: 0.9rem; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 1.1rem 1.3rem; }
+  .doc .finding .n { font-family: Georgia, serif; font-size: 1.3rem; color: var(--accent); font-weight: 700; }
+  .doc .finding h4 { margin: 0 0 0.25rem; font-size: 0.98rem; color: var(--ink); font-family: inherit; }
+  .doc .finding p { margin: 0; font-size: 0.88rem; }
+
+  .doc .open-box { background: var(--accent2-wash); border: 1px solid var(--line); border-left: 4px solid var(--accent2); border-radius: 4px; padding: 1.3rem 1.5rem; margin-top: 1.2rem; }
+  .doc .open-box p { color: var(--ink); max-width: none; }
+  .doc .open-box ul { color: var(--ink-2); padding-left: 1.2rem; margin: 0.6rem 0 0; }
+  .doc .open-box li { margin-bottom: 0.4rem; font-size: 0.92rem; }
+
+  .doc .prov-list { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1rem; }
+  .doc .prov-row { display: grid; grid-template-columns: 1fr 2fr; gap: 1rem; font-size: 0.84rem; padding: 0.6rem 0; border-bottom: 1px solid var(--line); }
+  .doc .prov-row .f { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: var(--accent); }
+  .doc .prov-row .s { color: var(--ink-2); }
+
+  .doc footer { padding-top: 2.5rem; }
+  .doc footer p { font-size: 0.8rem; color: var(--ink-muted); }
+</style>
+
+<div class="doc">
+  <div class="masthead">
+    <div class="wrap">
+      <p class="kicker">DATA 780 &middot; Group Project &middot; Findings Report (v2)</p>
+      <h1>Predicting World Cup Scoring Margin, Tested Against the Real 2026 Tournament</h1>
+      <p class="dek">A consolidated account of every model this project has built &mdash; baseline, roster-composition, ordinal rank, and neural-network &mdash; scored against real, previously-unseen results from the concluded 2026 World Cup.</p>
+      <div class="meta">
+        <span><b>Team</b>&nbsp; Colby Bogie &middot; Henry Halvorsen &middot; Henmi Ng &middot; Mohammed Shittu-Oyelude</span>
+        <span><b>Folder</b>&nbsp; Mohammed_2026_Evaluation_v2</span>
+        <span><b>Prepared</b>&nbsp; 27 July 2026</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+
+    <!-- ================= THESIS ================= -->
+    <section id="thesis">
+      <p class="eyebrow">The short version</p>
+      <h2>Ordinal FIFA rank, combined with roster composition, is the best predictor we've found</h2>
+      <div class="thesis-box">
+        <p><b>Our best-performing model out of eleven tested</b> combines a team's literal FIFA rank position (1st, 2nd, 3rd...) with the share of its roster playing in Europe's top-5 leagues. Scored against the real, concluded 2026 World Cup, this combination lands at <b>RMSE 0.931</b> -- clearly ahead of every Ranking-Points-based model, every roster-only model, and a neural network, all clustered between RMSE 1.04 and 1.33.</p>
+        <p>The one part of our proposal we still can't close out: benchmarking against Nate Silver's "Pele" system. That data is paywalled &mdash; see &sect; Still Open below.</p>
+      </div>
+      <div class="revision-box">
+        <div class="label">Revision note</div>
+        <p>An earlier round of this evaluation concluded that a simple roster-composition metric (<span class="mono">t5league</span>) beat FIFA Ranking Points, full stop. Colby has since found that <b>Ordinal Rank</b> &mdash; a team's literal rank position, not its raw points score &mdash; is a meaningfully stronger FIFA-based input than Ranking Points was. This report reflects that revision: the old conclusion is superseded, not merely refined. See &sect; Findings, item 1.</p>
+      </div>
+    </section>
+
+    <!-- ================= PIPELINE ================= -->
+    <section id="pipeline">
+      <p class="eyebrow">How the folder works</p>
+      <h2>Data &rarr; notebook &rarr; result, for everything in this folder</h2>
+      <p>Three notebooks live in <span class="mono">Mohammed_2026_Evaluation_v2/</span>, each a working copy of an existing team notebook, extended to test against real 2026 results. All three draw from the same underlying data files, shown once below rather than repeated per lane.</p>
+
+      <div class="pipeline-scroll">
+        <div class="pipeline">
+          <div class="pl-shared">
+            <b>Shared inputs, all in this folder:</b>
+            <span class="mono">wc_2018.csv</span> (2018 WC, 32 teams) &middot;
+            <span class="mono">wc_2022.csv</span> (2022 WC, 32 teams) &middot;
+            <span class="mono">fifa_ranking-2024-06-20.csv</span> (historical FIFA rank &amp; points, 1992&ndash;2024) &middot;
+            <span class="mono">wc_2026_model_input.csv</span> (2026 WC, 48 teams, real results + roster composition + the official 11&nbsp;June&nbsp;2026 FIFA ranking, both ordinal rank and points)
+          </div>
+
+          <div class="pl-row">
+            <div class="pl-tag">Pipeline A</div>
+            <div class="pl-stages">
+              <div class="pl-stage data"><div class="h">2010&ndash;2022 goals + roster-by-league + FIFA rank &amp; points</div><div class="d">128 team-tournament rows, standardized</div></div>
+              <div class="pl-stage code"><div class="h">ranking_points_and_t5league_modeling_<wbr>EVAL_COPY.ipynb</div><div class="d">Scores all 8 of Colby's linear regressions (now including Ordinal Rank variants) plus the neural network from Pipeline B against real 2026 data</div></div>
+              <div class="pl-stage out"><div class="h">9-model 2026 comparison</div><div class="d">Best: Ordinal Rank + t5league, RMSE 0.931</div></div>
+            </div>
+          </div>
+
+          <div class="pl-row">
+            <div class="pl-tag">Pipeline B</div>
+            <div class="pl-stages">
+              <div class="pl-stage data"><div class="h">Same 2010&ndash;2022 features as Pipeline A</div><div class="d">Ordinal Rank + 5 individual league shares, no intercept column</div></div>
+              <div class="pl-stage code"><div class="h">ranking_points_and_t5league_modeling_<wbr>NN_COPY.ipynb</div><div class="d">Fills in the notebook's stubbed &ldquo;Neural Network&rdquo; section with a scikit-learn MLPRegressor (8 hidden units)</div></div>
+              <div class="pl-stage out"><div class="h">In-sample fit only</div><div class="d">RMSE 0.555 vs. 0.835 best linear &mdash; looked even better than before, overfit even more (out-of-sample: 1.153)</div></div>
+            </div>
+          </div>
+
+          <div class="pl-row">
+            <div class="pl-tag">Pipeline C</div>
+            <div class="pl-stages">
+              <div class="pl-stage data"><div class="h">2018 (train) + 2022 (test) team summaries + FIFA rank/points</div><div class="d">Aggregated from match-level rows; joined on pre-tournament ranking date</div></div>
+              <div class="pl-stage code"><div class="h">mohammed_baseline_models_2026_<wbr>EVAL_COPY.ipynb</div><div class="d">Fills in a never-executed template; fits 5 models on 2018; verifies against originally-reported 2022 numbers; scores same models on 2026</div></div>
+              <div class="pl-stage out"><div class="h">2022 vs. 2026, side by side</div><div class="d">Best both times: Linear regression on ordinal FIFA rank</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pl-legend">
+        <span><i style="background:var(--accent2)"></i> data in</span>
+        <span><i style="background:var(--accent)"></i> notebook / code</span>
+        <span><i style="background:var(--accent-strong)"></i> result out</span>
+      </div>
+    </section>
+
+    <!-- ================= NOTEBOOK CARDS ================= -->
+    <section id="notebooks">
+      <p class="eyebrow">Notebook by notebook</p>
+      <h2>What the code in each notebook actually does</h2>
+
+      <div class="card">
+        <h3>Pipeline A &mdash; Roster-composition &amp; ordinal-rank models, scored on 2026</h3>
+        <div class="file">ranking_points_and_t5league_modeling_EVAL_COPY.ipynb</div>
+        <div class="grid">
+          <div class="field">
+            <label>Dataset used</label>
+            <div>2010&ndash;2022: World Cup goals + FBref roster-by-league counts, joined to FIFA Ranking Points and Ordinal Rank at each pre-tournament date. 2026: <span class="mono">wc_2026_model_input.csv</span> (real outcomes, both FIFA rank forms, already merged).</div>
+          </div>
+          <div class="field">
+            <label>What the code does</label>
+            <ul>
+              <li>Builds <span class="mono">Y</span>: standardized scoring margin, 128 rows (2010&ndash;2022)</li>
+              <li>Builds <span class="mono">RP</span>, <span class="mono">OR</span> (Ordinal Rank), <span class="mono">t5league</span>, and 5 individual league-share features, all standardized</li>
+              <li>Fits 8 OLS regressions via <span class="mono">np.linalg.lstsq</span> -- every combination of {RP, OR} &times; {alone, +t5league, +individual leagues}, plus t5league/individual leagues alone</li>
+              <li>Re-standardizes the 2026 features using the <em>training</em> mean/std</li>
+              <li>Scores all 8 linear models + the neural network from Pipeline B against real 2026 outcomes</li>
+            </ul>
+          </div>
+        </div>
+        <div class="result">Best model: <b>Ordinal Rank + t5league (aggregate)</b>, RMSE 0.931 / MAE 0.759 &mdash; the strongest result this project has produced, and it generalizes.</div>
+      </div>
+
+      <div class="card">
+        <h3>Pipeline B &mdash; Filling in the Neural Network</h3>
+        <div class="file">ranking_points_and_t5league_modeling_NN_COPY.ipynb</div>
+        <div class="grid">
+          <div class="field">
+            <label>Dataset used</label>
+            <div>Same 2010&ndash;2022 training features as Pipeline A (Ordinal Rank + 5 league shares -- the strongest feature set per the notebook's own revised conclusion). No 2026 data touches this notebook directly &mdash; its fitted network is re-used and tested out-of-sample back in Pipeline A.</div>
+          </div>
+          <div class="field">
+            <label>What the code does</label>
+            <ul>
+              <li>TensorFlow has no wheel for this environment's Python version &mdash; substituted scikit-learn's <span class="mono">MLPRegressor</span></li>
+              <li>One hidden layer, 8 units, ReLU, <span class="mono">lbfgs</span> solver, <span class="mono">random_state=0</span></li>
+              <li>Fit on all 128 rows, no held-out split</li>
+              <li>Compares its RMSE to the best linear model on the same features</li>
+            </ul>
+          </div>
+        </div>
+        <div class="result">In-sample RMSE: <b>0.555</b>, vs. <b>0.835</b> for the best linear model. <span class="tag critical">Overfit, again</span> Out-of-sample on 2026 (scored in Pipeline A): RMSE 1.153, worse than 7 of the other 8 models.</div>
+      </div>
+
+      <div class="card">
+        <h3>Pipeline C &mdash; Extending the baseline suite to 2026</h3>
+        <div class="file">mohammed_baseline_models_2026_EVAL_COPY.ipynb</div>
+        <div class="grid">
+          <div class="field">
+            <label>Dataset used</label>
+            <div><span class="mono">wc_2018.csv</span> (train), <span class="mono">wc_2022.csv</span> (test), <span class="mono">fifa_ranking-2024-06-20.csv</span> at both pre-tournament dates, then <span class="mono">wc_2026_model_input.csv</span> as a second, independent test set.</div>
+          </div>
+          <div class="field">
+            <label>What the code does</label>
+            <ul>
+              <li>Aggregates match-level rows into one row per team (goals for/against, games played, scoring margin)</li>
+              <li>Joins each team to its FIFA rank &amp; points on the pre-tournament ranking date</li>
+              <li>Fits historical mean, 2 linear regressions, a depth-3 decision tree, and a 500-tree random forest &mdash; all on 2018 only</li>
+              <li>Verifies its regenerated 2022 numbers against the midway report's originally recorded results</li>
+              <li>Runs the same, un-refit models forward onto real 2026 results</li>
+            </ul>
+          </div>
+        </div>
+        <div class="result">Best model, both years: <b>Linear regression on (ordinal) FIFA rank</b> &mdash; RMSE 0.900 (2022) and 1.049 (2026). This notebook already used ordinal rank, not points, so it was unaffected by Colby's revision -- and its own finding is consistent with Pipeline A's.</div>
+      </div>
+    </section>
+
+    <!-- ================= RESULTS ================= -->
+    <section id="results">
+      <p class="eyebrow">The numbers</p>
+      <h2>Consolidated results</h2>
+
+      <h3 style="font-size:1.05rem; margin-top:0.4rem;">All 9 roster-composition, FIFA-rank &amp; neural-network models, scored on real 2026 results</h3>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Model</th><th class="num">RMSE</th><th class="num">MAE</th></tr></thead>
+          <tbody>
+            <tr class="best"><td>Ordinal Rank + t5league (aggregate)<span class="tag good">best</span></td><td class="num">0.931</td><td class="num">0.759</td></tr>
+            <tr><td>Ordinal Rank + individual leagues</td><td class="num">0.939</td><td class="num">0.766</td></tr>
+            <tr><td>Ordinal Rank only</td><td class="num">0.973</td><td class="num">0.789</td></tr>
+            <tr><td>t5league only (aggregate)</td><td class="num">1.045</td><td class="num">0.836</td></tr>
+            <tr><td>RP + t5league (aggregate)</td><td class="num">1.045</td><td class="num">0.808</td></tr>
+            <tr><td>RP + individual leagues</td><td class="num">1.053</td><td class="num">0.817</td></tr>
+            <tr><td>Individual leagues only</td><td class="num">1.054</td><td class="num">0.850</td></tr>
+            <tr><td>Neural network (Ordinal Rank + individual leagues)</td><td class="num">1.153</td><td class="num">0.884</td></tr>
+            <tr><td>Ranking Points only <span class="tag critical">worst</span></td><td class="num">1.333</td><td class="num">1.010</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="barchart">
+        <div class="bar-row"><div class="name">Ordinal Rank + t5league</div><div class="bar-track"><div class="bar-fill" style="width:70%"></div></div><div class="val">0.931</div></div>
+        <div class="bar-row"><div class="name">Ordinal Rank + ind. leagues</div><div class="bar-track"><div class="bar-fill" style="width:70%"></div></div><div class="val">0.939</div></div>
+        <div class="bar-row"><div class="name">Ordinal Rank only</div><div class="bar-track"><div class="bar-fill" style="width:73%"></div></div><div class="val">0.973</div></div>
+        <div class="bar-row"><div class="name">t5league only</div><div class="bar-track"><div class="bar-fill" style="width:78%"></div></div><div class="val">1.045</div></div>
+        <div class="bar-row"><div class="name">RP + t5league</div><div class="bar-track"><div class="bar-fill" style="width:78%"></div></div><div class="val">1.045</div></div>
+        <div class="bar-row"><div class="name">RP + ind. leagues</div><div class="bar-track"><div class="bar-fill" style="width:79%"></div></div><div class="val">1.053</div></div>
+        <div class="bar-row"><div class="name">Ind. leagues only</div><div class="bar-track"><div class="bar-fill" style="width:79%"></div></div><div class="val">1.054</div></div>
+        <div class="bar-row"><div class="name">Neural network</div><div class="bar-track"><div class="bar-fill critical-fill" style="width:87%"></div></div><div class="val">1.153</div></div>
+        <div class="bar-row"><div class="name">Ranking Points only</div><div class="bar-track"><div class="bar-fill critical-fill" style="width:100%"></div></div><div class="val">1.333</div></div>
+      </div>
+      <p class="chart-caption">RMSE on real 2026 results, goals/game &mdash; shorter is better.</p>
+
+      <h3 style="font-size:1.05rem; margin-top:2.2rem;">Baseline family: same 2018-fitted models, scored on 2022 vs. 2026</h3>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Model</th><th class="num">RMSE 2022</th><th class="num">RMSE 2026</th></tr></thead>
+          <tbody>
+            <tr class="best"><td>Linear regression: FIFA rank<span class="tag good">best both years</span></td><td class="num">0.900</td><td class="num">1.049</td></tr>
+            <tr><td>Decision tree</td><td class="num">0.974</td><td class="num">1.099</td></tr>
+            <tr><td>Random forest</td><td class="num">1.000</td><td class="num">1.249</td></tr>
+            <tr><td>Historical mean</td><td class="num">1.022</td><td class="num">1.335</td></tr>
+            <tr><td>Linear regression: FIFA points <span class="tag critical">worst both years</span></td><td class="num">1.248</td><td class="num">1.497</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="chart-legend">
+        <span><i style="background:var(--accent)"></i> 2022 test</span>
+        <span><i style="background:var(--accent2)"></i> 2026 test</span>
+      </div>
+      <p class="chart-caption">Every model got worse on 2026 than on 2022 (expected: a larger, 48-team field with more low-ranked teams than training data ever saw) but their <em>relative order</em> barely changed.</p>
+    </section>
+
+    <!-- ================= FINDINGS ================= -->
+    <section id="findings">
+      <p class="eyebrow">What it means</p>
+      <h2>Cross-cutting findings</h2>
+      <div class="findings">
+        <div class="finding">
+          <div class="n">1</div>
+          <div><h4>Ordinal Rank, not raw Ranking Points, is the right way to use FIFA's rankings</h4><p>Switching from FIFA Ranking Points to a team's literal Ordinal Rank meaningfully improved every model that used it, both in-sample and on real 2026 data. This supersedes the project's earlier finding that roster composition alone beat "FIFA rank" -- it beat a poorly-scaled version of FIFA rank. Properly represented, FIFA rank is competitive with, and combined with roster composition, better than, our custom metric.</p></div>
+        </div>
+        <div class="finding">
+          <div class="n">2</div>
+          <div><h4>Combining metrics is genuinely worth it now</h4><p>The old analysis found combining roster composition with Ranking Points barely helped. With Ordinal Rank instead, the combined model clearly beats either input alone out-of-sample (0.931 vs. 0.973 for Ordinal Rank alone) -- real evidence the two capture different signal.</p></div>
+        </div>
+        <div class="finding">
+          <div class="n">3</div>
+          <div><h4>The neural network overfits again -- more dramatically this time</h4><p>In-sample it beat the best linear model by an even wider margin than before (0.555 vs. 0.835). Out-of-sample, it dropped to 1.153 -- worse than 7 of 8 linear models. Two neural networks, two confirmed overfitting results.</p></div>
+        </div>
+        <div class="finding">
+          <div class="n">4</div>
+          <div><h4>Raw FIFA Ranking Points is the weakest input across the entire project</h4><p>True in the original analysis, true in the revised one, true in the baseline suite. The one finding that never changed.</p></div>
+        </div>
+        <div class="finding">
+          <div class="n">5</div>
+          <div><h4>A separate approach on the team reaches a compatible conclusion</h4><p>Henmi's independent XGBoost/Poisson match-outcome model (predicting win/draw/loss rather than scoring margin) found that a simpler Poisson baseline (68.7% accuracy) beat XGBoost (63.9%) on real 2026 matches -- the same "simpler model wins" pattern showing up in a completely different methodology and target variable.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CONTEXT: HENMI ================= -->
+    <section id="context">
+      <p class="eyebrow">Elsewhere on the team</p>
+      <h2>A complementary approach: match-outcome classification</h2>
+      <p>Henmi built a separate pipeline (<span class="mono">Henmi_Player_Stats_XGBoost/</span>) predicting match outcomes (home win / draw / away win) rather than tournament-long scoring margin, using ELO ratings plus individual player performance stats (club and international goals, assists, passes, shots, tackles) pulled from an API-football source. Trained on 3,728 matches from 2018 through just before the tournament, tested on the 104 real 2026 World Cup matches.</p>
+
+      <h3 style="font-size:1.02rem; margin-top:1.8rem;">Documentation: data pipeline, stage by stage</h3>
+      <p style="margin-bottom:0.4rem;">Redrawn from Henmi's own pipeline diagram for legibility and to match this report's system -- content is unchanged from his original.</p>
+      <div class="hpipe-scroll">
+        <div class="hpipe">
+
+          <div class="hpipe-col">
+            <div class="hpipe-head">Stage 1<span>Raw Data Sources</span></div>
+            <div class="hpipe-card data">
+              <div class="t">Player Statistics</div>
+              <div class="d">API-Football, 2023&ndash;2025<br>19,305 raw rows</div>
+            </div>
+            <div class="hpipe-card data">
+              <div class="t">Elo Ratings</div>
+              <div class="d">eloratings.net, 2018&ndash;2026<br>48 nations, annual snapshots</div>
+            </div>
+            <div class="hpipe-card data">
+              <div class="t">Match Results</div>
+              <div class="d">1872&ndash;2026, filtered to 2018&ndash;2026<br>48 qualified teams</div>
+            </div>
+          </div>
+
+          <div class="hpipe-arrow">&rarr;</div>
+
+          <div class="hpipe-col">
+            <div class="hpipe-head">Stage 2<span>Cleaning &amp; Integrity Checks</span></div>
+            <div class="hpipe-card proc">
+              <div class="d">&bull; Filter minutes &gt; 0<br>&bull; Drop pass_accuracy_pct (64.6% missing)<br>&bull; Split club vs. intl<br>&bull; Null shots for GKs</div>
+            </div>
+            <div class="hpipe-card proc">
+              <div class="d">&bull; Drop wc2026_exit_round (target leakage)<br>&bull; Resolve naming mismatches (Czechia, USA, Cura&ccedil;ao...)</div>
+            </div>
+            <div class="hpipe-card proc">
+              <div class="d">&bull; Restrict to 2018&ndash;2026<br>&bull; Qualified-team matches only<br>&bull; Add tier flag</div>
+            </div>
+          </div>
+
+          <div class="hpipe-arrow">&rarr;</div>
+
+          <div class="hpipe-col">
+            <div class="hpipe-head">Stage 3<span>Aggregation &amp; Feature Eng.</span></div>
+            <div class="hpipe-card proc">
+              <div class="t">Player &rarr; Team Features</div>
+              <div class="d">Minutes-weighted rating, summed stats, averaged across roster (48 vectors)</div>
+            </div>
+            <div class="hpipe-card proc">
+              <div class="t">Time-Aware Elo Join</div>
+              <div class="d">Backward-looking merge &mdash; each match gets the Elo rating in effect as of its actual date, not a future one</div>
+            </div>
+            <div class="hpipe-card proc">
+              <div class="t">Difference Features</div>
+              <div class="d">home &minus; away for every Elo &amp; player statistic</div>
+            </div>
+          </div>
+
+          <div class="hpipe-arrow">&rarr;</div>
+
+          <div class="hpipe-col single">
+            <div class="hpipe-head">Stage 4<span>Final Feature Table</span></div>
+            <div class="hpipe-card data tall">
+              <div class="t">Final Match Feature Table</div>
+              <div class="d">104 matches &times; Elo + player diffs</div>
+            </div>
+          </div>
+
+          <div class="hpipe-arrow">&rarr;</div>
+
+          <div class="hpipe-col">
+            <div class="hpipe-head">Stage 5<span>Walk-Forward Split</span></div>
+            <div class="hpipe-card data">
+              <div class="t">Train</div>
+              <div class="d">Matches before 2026-06-11</div>
+            </div>
+            <div class="hpipe-card data">
+              <div class="t">Test</div>
+              <div class="d">Actual 2026 World Cup matches (104)</div>
+            </div>
+          </div>
+
+          <div class="hpipe-arrow">&rarr;</div>
+
+          <div class="hpipe-col">
+            <div class="hpipe-head">Stage 6<span>Models</span></div>
+            <div class="hpipe-card proc">
+              <div class="t">Poisson Baseline</div>
+              <div class="d"><span class="mono" style="font-size:0.72rem;">goals ~ team + opponent + is_home</span><br>Scores all 104 matches</div>
+            </div>
+            <div class="hpipe-card proc">
+              <div class="t">XGBoost Classifier</div>
+              <div class="d">3-class, trained on Elo + player diffs<br>Scores 83 of 104</div>
+            </div>
+          </div>
+
+          <div class="hpipe-arrow">&rarr;</div>
+
+          <div class="hpipe-col single">
+            <div class="hpipe-head">Stage 7<span>Fair Evaluation</span></div>
+            <div class="hpipe-card proc tall">
+              <div class="d">Both models scored on the same 83-match subset (Accuracy, RPS, P/R/F1)</div>
+            </div>
+          </div>
+
+          <div class="hpipe-arrow">&rarr;</div>
+
+          <div class="hpipe-col">
+            <div class="hpipe-head">Results</div>
+            <div class="hpipe-card result good">
+              <div class="t">Poisson</div>
+              <div class="d">68.7% accuracy, RPS 0.145<br>Strong decisive outcomes<br>0% draw recall</div>
+            </div>
+            <div class="hpipe-card result">
+              <div class="t">XGBoost</div>
+              <div class="d">63.9% accuracy, RPS 0.153<br>22.2% draw recall<br>Lower away-win recall (61%)</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="pl-legend">
+        <span><i style="background:var(--accent2)"></i> data</span>
+        <span><i style="background:var(--accent)"></i> process</span>
+        <span><i style="background:var(--accent-strong)"></i> result</span>
+      </div>
+
+      <div class="table-scroll" style="margin-top:1.8rem;">
+        <table>
+          <thead><tr><th>Model</th><th class="num">Accuracy (83-match fair comparison)</th></tr></thead>
+          <tbody>
+            <tr class="best"><td>Poisson (team + opponent + home advantage)<span class="tag good">best</span></td><td class="num">68.7%</td></tr>
+            <tr><td>XGBoost (ELO + player stats)</td><td class="num">63.9%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Both models are weak at predicting draws specifically (Poisson: 0% precision/recall; XGBoost: 22-25%). This is a different target variable and methodology from Pipelines A-C, so it isn't merged into the comparison table above -- but it's worth noting as independent corroboration of this project's recurring theme: simpler models are holding their own against more flexible ones, across every approach the team has tried.</p>
+      <p style="margin-top:0.8rem;">Try it yourself: the <span class="mono">MODEL_DEMO.html</span> "Predict a match" tab reproduces these exact fitted Poisson and XGBoost models (verified to match Henmi's reported numbers) across all 83 real 2026 matches.</p>
+    </section>
+
+    <!-- ================= OPEN ================= -->
+    <section id="open">
+      <p class="eyebrow">Unfinished business</p>
+      <h2>Still open: the proposal's actual benchmark</h2>
+      <div class="open-box">
+        <p>Our proposal set a specific bar: beat Nate Silver's &ldquo;Pele&rdquo; system on the 2026 World Cup. We could not close this out, for two real reasons:</p>
+        <ul>
+          <li><b>Paywalled data.</b> Silver's per-team PELE ratings and projections sit behind a Silver Bulletin subscription. We did not pay for access to work around this.</li>
+          <li><b>Mismatched target variable.</b> PELE outputs championship/advancement <em>probability</em>, not a projected scoring margin -- converting one to the other would be its own modeling decision, not a free lookup.</li>
+        </ul>
+        <p style="margin-top:0.8rem;">If anyone on the team has (or gets) Silver Bulletin access, pulling PELE's per-team projected goals and re-running this comparison is the one piece that would let us honestly answer the proposal's original question. Full detail in <span class="mono">ranking_points_and_t5league_modeling_EVAL_COPY.ipynb</span>.</p>
+      </div>
+    </section>
+
+    <!-- ================= PROVENANCE ================= -->
+    <section id="provenance">
+      <p class="eyebrow">Where the data came from</p>
+      <h2>Data provenance</h2>
+      <div class="prov-list">
+        <div class="prov-row"><div class="f">wc_2018.csv / wc_2022.csv</div><div class="s">Kaggle &amp; GitLab, downloaded by Colby, June 2026</div></div>
+        <div class="prov-row"><div class="f">fifa_ranking-2024-06-20.csv</div><div class="s">Kaggle, downloaded by Colby, June 2026 &mdash; historical rank &amp; points, 1992&ndash;2024</div></div>
+        <div class="prov-row"><div class="f">wc_2026_x_matrix / model_input / y_vector.csv</div><div class="s">FBref (roster composition) &mdash; provenance recorded inline in each file's own source-note columns</div></div>
+        <div class="prov-row"><div class="f">2026 FIFA rank / points (updated)</div><div class="s">Official FIFA/Coca-Cola Men's World Ranking, 11 June 2026 release &mdash; inside.fifa.com/fifa-world-ranking/men</div></div>
+        <div class="prov-row"><div class="f">Henmi's ELO ratings &amp; player stats</div><div class="s">API-football, per <span class="mono">Henmi_Player_Stats_XGBoost/</span></div></div>
+      </div>
+    </section>
+
+    <footer>
+      <p>Consolidates <span class="mono">ranking_points_and_t5league_modeling_EVAL_COPY.ipynb</span>, <span class="mono">ranking_points_and_t5league_modeling_NN_COPY.ipynb</span>, and <span class="mono">mohammed_baseline_models_2026_EVAL_COPY.ipynb</span>, all in <span class="mono">Mohammed_2026_Evaluation_v2/</span>. Supersedes the earlier <span class="mono">Mohammed_2026_Evaluation_Data_DRAFT/</span> round, which used FIFA Ranking Points where this round uses the stronger Ordinal Rank input. Original team notebooks elsewhere in the repo were not modified.</p>
+    </footer>
+
+  </div>
+</div>
